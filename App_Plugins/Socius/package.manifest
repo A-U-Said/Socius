@@ -1,0 +1,14 @@
+{
+	"javascript": [
+		"~/App_Plugins/Socius/backoffice/Socius/Profile.controller.js",
+		"~/App_Plugins/Socius/backoffice/Socius/ProfileList.controller.js",
+		"~/App_Plugins/Socius/backoffice/Socius/Profiles.controller.js",
+		"~/App_Plugins/Socius/backoffice/Socius/ProfilesHelp.controller.js",
+		"~/App_Plugins/Socius/backoffice/Socius/UserInteraction.controller.js",
+		"~/App_Plugins/Socius/backoffice/Socius/Welcome.controller.js",
+		"~/App_Plugins/Socius/backoffice/Socius/profiles.resource.js",
+	],
+	"css": [
+		"~/App_Plugins/Socius/backoffice/Socius/Socius.css"
+	]
+}

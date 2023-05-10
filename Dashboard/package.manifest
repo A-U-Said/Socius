@@ -1,0 +1,16 @@
+{
+    "dashboards": [
+	{
+		"alias": "socius",
+        "view": "~/App_Plugins/Socius/Dashboard/Views/SociusOverview.html",
+        "sections": [ "settings" ],
+        "weight": 20,
+        "access": [
+			{ "grant": "admin" }
+        ]
+      }
+    ],
+	javascript [
+		"~/App_Plugins/Socius/Dashboard/Controllers/overview.controller.js",
+	]
+}

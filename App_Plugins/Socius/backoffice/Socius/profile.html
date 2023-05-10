@@ -1,0 +1,218 @@
+<div ng-controller="Socius.ProfileController as vm" class="clearfix sc-profile-container">
+
+		<form name="editProfileForm" novalidate val-form-manager>
+
+			<umb-editor-view>
+
+				<umb-editor-header 
+					name="vm.profile.name"
+					name-locked="false"
+					hide-icon="true"
+					hide-description="true"
+					hide-alias="true"
+					navigation="vm.profile.navigation"
+					on-back="vm.goToPage(vm.breadcrumbs[0])"
+					show-back-button="true">
+				</umb-editor-header>
+
+				<umb-editor-container>
+
+					<umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
+
+					<div style="display: flex">
+
+						<section class="sc-profile-credentials">
+
+							<umb-box>
+								<ng-form name="facebookProfileForm">
+									<umb-box-header title="Facebook"></umb-box-header>
+									<umb-box-content class="block-form">
+										<umb-control-group label="App Id" alias="fbAppId">
+											<input 
+												type="text"
+												placeholder="Facebook App Id"
+												class="input-block-level"
+												ng-model="vm.profile.feeds.facebook.appId"
+												umb-auto-focus
+												name="fbAppId"
+												id="fbAppId"
+												ng-required="false" />
+										</umb-control-group>
+										<umb-control-group label="Client Secret" alias="fbClientSecret">
+											<input 
+												type="text"
+												placeholder="Facebook Client Secret"
+												class="input-block-level"
+												ng-model="vm.profile.feeds.facebook.clientSecret"
+												umb-auto-focus
+												name="fbClientSecret"
+												id="fbClientSecret"
+												ng-required="false" />
+										</umb-control-group>
+										<umb-control-group label="Page ID" alias="fbPageId">
+											<input 
+												type="text"
+												placeholder="Facebook Page Id"
+												class="input-block-level"
+												ng-model="vm.profile.feeds.facebook.pageID"
+												umb-auto-focus
+												name="fbPageId"
+												id="fbPageId"
+												ng-required="false" />
+										</umb-control-group>
+									</umb-box-content>
+								</ng-form>
+							</umb-box>
+
+							<umb-box>
+								<ng-form name="instagramProfileForm">
+									<umb-box-header title="Instagram"></umb-box-header>
+									<umb-box-content class="block-form">
+										<umb-control-group label="Client Id" alias="igClientId">
+											<input 
+												type="text"
+												placeholder="Instagram Client Id"
+												class="input-block-level"
+												ng-model="vm.profile.feeds.instagram.clientId"
+												umb-auto-focus
+												name="igClientId"
+												id="igClientId"
+												ng-required="false" />
+										</umb-control-group>
+										<umb-control-group label="Client Secret" alias="igClientSecret">
+											<input 
+												type="text"
+												placeholder="Instagram Client Secret"
+												class="input-block-level"
+												ng-model="vm.profile.feeds.instagram.clientSecret"
+												umb-auto-focus
+												name="igClientSecret"
+												id="igClientSecret"
+												ng-required="false" />
+										</umb-control-group>
+									</umb-box-content>
+								</ng-form>
+							</umb-box>
+
+							<umb-box>
+								<ng-form name="twitterProfileForm">
+									<umb-box-header title="Twitter"></umb-box-header>
+									<umb-box-content class="block-form">
+										<umb-control-group label="User Id" alias="twUserID">
+											<input 
+												type="text"
+												placeholder="Twitter User Id"
+												class="input-block-level"
+												ng-model="vm.profile.feeds.twitter.userID"
+												umb-auto-focus
+												name="twUserID"
+												id="twUserID"
+												ng-required="false" />
+										</umb-control-group>
+									</umb-box-content>
+								</ng-form>
+							</umb-box>
+
+						</section>
+
+						<aside class="sc-profile-meta">
+							<umb-box>
+								<umb-box-content>
+									<ng-form name="avatarForm" class="sc-profile-image-editor">
+										<umb-avatar 
+											style="margin-bottom: 16px;"
+											color="secondary"
+											size="xxl"
+											name="{{vm.profile.name}}"
+											img-src="{{vm.profile.profileImage}}">
+										</umb-avatar>
+										<div>
+											<button 
+												class="btn-link umb-user-group-preview__action"
+												ngf-select 
+												ng-model="filesHolder"
+												ngf-change="vm.changeAvatar($files)"
+												ngf-multiple="false"
+												ngf-pattern="{{vm.acceptedFileTypes}}"
+												ngf-max-size="{{ vm.maxFileSize }}">
+												Change Picture
+											</button>
+											<button 
+												ng-if="vm.profile.profileImage != null"
+												class="btn-link umb-user-group-preview__action umb-user-group-preview__action--red"
+												ng-click="vm.clearAvatar()"
+												prevent-default>
+												Remove Picture
+											</button>
+										</div>
+									</ng-form>
+								</umb-box-content>
+							</umb-box>
+							<umb-box>
+								<umb-box-content>
+									<div class="sc-profile-metadata-item">
+                    <strong>Id</strong>
+                    <p>{{ vm.profile.id }}</p>
+                	</div>
+									<div class="sc-profile-metadata-item">
+                    <strong>Last Updated By</strong>
+                    <p>{{ vm.profile.updatedBy }}</p>
+                	</div>
+									<div class="sc-profile-metadata-item">
+                    <strong>Updated Date</strong>
+                    <p>{{ vm.profile.updateDate }}</p>
+                	</div>
+									<div class="sc-profile-metadata-item">
+                    <strong>Created By</strong>
+                    <p>{{ vm.profile.createdBy }}</p>
+                	</div>
+									<div class="sc-profile-metadata-item">
+                    <strong>Created Date</strong>
+                    <p>{{ vm.profile.createDate }}</p>
+                	</div>
+								</umb-box-content>
+							</umb-box>
+						</aside>
+
+					</div>
+
+				</umb-editor-container>
+
+				<umb-editor-footer>
+
+					<umb-editor-footer-content-left>
+						<umb-breadcrumbs 
+							ancestors="vm.breadcrumbs"
+							allow-on-open="true"
+							on-open="vm.goToPage(ancestor)">
+						</umb-breadcrumbs>
+					</umb-editor-footer-content-left>
+
+					<umb-editor-footer-content-right>
+						<umb-button 
+							type="button"
+							action="vm.goToPage(vm.breadcrumbs[0])"
+							button-style="link"
+							label="Return to list"
+							label-key="buttons_returnToList"
+							disabled="vm.loading">
+						</umb-button>
+						<umb-button 
+							type="button"
+							action="vm.save()"
+							state="vm.page.saveButtonState"
+							button-style="success"
+							shortcut="ctrl+s"
+							label="Save"
+							label-key="buttons_save"
+							disabled="vm.loading">
+						</umb-button>
+					</umb-editor-footer-content-right>
+
+				</umb-editor-footer>
+
+			</umb-editor-view>
+
+		</form>	
+
+</div>

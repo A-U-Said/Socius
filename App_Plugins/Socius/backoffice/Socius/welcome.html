@@ -1,0 +1,47 @@
+<div ng-controller="Socius.WelcomeController as vm" class="clearfix">
+
+  <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
+
+  <umb-editor-view footer="false" header="false">
+
+    <umb-box>
+      <umb-box-content>
+        <h1><span class="color-indigo icon icon-share-alt-2"></span> {{vm.page.title}}</h1>
+          <p>{{vm.page.description}}</p>
+      </umb-box-content>
+    </umb-box>
+    
+    <umb-pane>
+
+      <div class="sc-welcome">
+
+        <div class="sc-cards">
+
+          <umb-box ng-repeat="dashboard in vm.dashboards">
+              <umb-box-content ng-click="vm.goToDashboard(dashboard.url)">
+                <h3><span class="{{dashboard.icon}}"></span> {{dashboard.name}}</h3>
+                <small>{{dashboard.description}}</small>
+              </umb-box-content>
+          </umb-box>
+
+        </div>
+
+        <ul class="sc-changelog">
+          <li ng-repeat="change in vm.changelog">
+            <span class="sc-changelog-line">•</span>
+            <div class="sc-changelog-log">
+              <h5>{{change.title}} - {{change.date}}</h5>
+              <ul>
+                <li ng-repeat="note in change.changes">{{note}}</li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+
+    </umb-pane>
+
+  </umb-editor-view>
+
+</div>

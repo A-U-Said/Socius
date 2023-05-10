@@ -1,0 +1,91 @@
+
+<div class="clearfix" ng-controller="Socius.ProfileListController as vm">
+
+	<!-- Loading -->
+	<umb-load-indicator ng-show="vm.loading"></umb-load-indicator>
+
+	<!-- Header Bar -->
+	<umb-editor-sub-header>
+	
+		<!-- Create Action -->
+		<umb-editor-sub-header-content-left>
+			<umb-button 
+				label="Create new profile"
+				button-style="outline"
+				type="button"
+				action="vm.createNewProfile()">
+			</umb-button>
+		</umb-editor-sub-header-content-left>
+		
+		<!-- Search and Display Actions -->
+		<umb-editor-sub-header-content-right>
+			<umb-search-filter 
+				text="Search..."
+				model="vm.filter.searchTerm">
+			</umb-search-filter>
+			<umb-layout-selector
+				layouts="vm.layouts"
+				active-layout="vm.activeLayout"
+				on-layout-select="vm.selectLayout(layout)">
+			</umb-layout-selector>
+		</umb-editor-sub-header-content-right>
+		
+	</umb-editor-sub-header>
+
+
+	<!-- Body -->
+
+	<!-- No Profiles -->
+	<umb-box ng-if="!vm.loading && vm.profiles.length === 0">
+		<umb-box-content class="block-form">
+			<umb-empty-state size="small">
+				<h4>There are no social media profiles.</h4>
+			</umb-empty-state>
+		</umb-box-content>
+	</umb-box>
+	
+	<!-- Card Layout -->
+	<div class="sc-overview-cards" ng-if="!vm.loading && vm.filtered.length > 0 && vm.activeLayout.path === '1'">
+		<div class="sc-profile-card" ng-repeat="profile in vm.filtered = (vm.profiles | filter: { 'name': vm.filter.searchTerm })">
+			<div>
+				<a>
+					<div class="sc-profile-card-avatar" ng-click="vm.openProfile(profile.id)">
+						<umb-avatar size="l" color="secondary" name="{{profile.name}}" img-src="{{profile.profileImage}}"></umb-avatar>
+					</div>
+					<div class="sc-profile-card-name">{{profile.name}}</div>
+				</a>
+				<div class="sc-profile-card-sites">
+					<span ng-repeat="website in profile.websites">{{ website }}<span ng-if="!$last">, </span></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Table Layout -->
+	<table class="table table-hover" ng-show="!vm.loading && vm.filtered.length > 0 && vm.activeLayout.path === '2'">
+		<thead>
+			<tr>
+				<th>Profile Name</th>
+				<th>Created By</th>
+				<th>Create Date</th>
+				<th>Updated</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="profile in vm.filtered = (vm.profiles | filter: { 'name': vm.filter.searchTerm })">
+				<th>
+					<button type="button" class="btn-reset bold" ng-click="vm.openProfile(profile.id)">{{profile.name}}</button>
+				</th>
+				<th>{{profile.createdBy}}</th>
+				<th>{{profile.createDate}}</th>
+				<th>{{profile.updateDate}}</th>
+			</tr>
+		</tbody>
+	</table>
+	
+	<!-- Empty Search -->
+	<umb-empty-state ng-if="!vm.loading && vm.filtered.length === 0" position="center">
+		<h5>There were no profiles found matching this search</h5>
+	</umb-empty-state>
+	
+</div>

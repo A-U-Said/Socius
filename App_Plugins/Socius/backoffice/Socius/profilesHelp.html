@@ -1,0 +1,17 @@
+<div ng-controller="Socius.ProfilesHelpController as vm" class="clearfix">
+
+  <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
+
+  <div class="sc-qna-article" ng-repeat="article in vm.faq">
+
+    <div class="sc-qna-question">
+        <h4>{{article.question}}</h4>
+    </div>
+
+    <div class="sc-qna-answer">
+      <p>{{article.answer}}</p>
+    </div>
+
+  </div>
+
+</div>
