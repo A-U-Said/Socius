@@ -1,43 +1,67 @@
 ﻿using NPoco;
 using Socius.Dto.Commands;
-using Socius.Migrations.Repositories;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
 namespace Socius.Models.Repositories
 {
 	[TableName("InstagramCredentials")]
-	[PrimaryKey("ProfileId", AutoIncrement = true)]
+	[PrimaryKey("ProfileId", AutoIncrement = false)]
 	[ExplicitColumns]
-	public class InstagramCredentialsSchema : ISociusSchema
+	public class InstagramCredentialsSchema : SociusUpdateCommand<UpdateInstagramCredentialsCommand>, ISociusSchema
 	{
+		public InstagramCredentialsSchema() { }
+
+		[SetsRequiredMembers]
+		public InstagramCredentialsSchema(int profileId, UpdateInstagramCredentialsCommand details)
+		{
+			ProfileId = profileId;
+			IgClientId = details.ClientId;
+			IgClientSecret = details.ClientSecret;
+			IgRedirectUri = details.RedirectUri;
+			IgToken = details.Token;
+			IgTokenExpiry = details.TokenExpiry;
+		}
+
 		[PrimaryKeyColumn(AutoIncrement = false), ForeignKey(typeof(SociusProfilesSchema), Column = "Id", OnDelete = Rule.Cascade)]
 		[Column("ProfileId")]
 		public required int ProfileId { get; set; }
 
-		[Column("IgClientId")]
-		public required long IgClientId { get; set; }
+		[Column("IgClientId"), NullSetting(NullSetting = NullSettings.Null)]
+		public long? IgClientId { get; set; }
 
-		[Column("IgClientSecret")]
-		public required string IgClientSecret { get; set; }
+		[Column("IgClientSecret"), NullSetting(NullSetting = NullSettings.Null)]
+		public string? IgClientSecret { get; set; }
 
-		[Column("IgRedirectUri")]
-		public required string IgRedirectUri { get; set; }
+		[Column("IgRedirectUri"), NullSetting(NullSetting = NullSettings.Null)]
+		public string? IgRedirectUri { get; set; }
 
-		[Column("IgToken")]
+		[Column("IgToken"), NullSetting(NullSetting = NullSettings.Null)]
 		[SpecialDbType(SpecialDbTypes.NVARCHARMAX)]
-		public required string IgToken { get; set; }
+		public string? IgToken { get; set; }
 
-		[Column("IgTokenExpiry")]
-		public required DateTime IgTokenExpiry { get; set; }
+		[Column("IgTokenExpiry"), NullSetting(NullSetting = NullSettings.Null)]
+		public DateTime? IgTokenExpiry { get; set; }
 
-
-		public void Update(UpdateInstagramCredentialsCommand newDetails)
+		public override void Update(UpdateInstagramCredentialsCommand newDetails)
 		{
+			//if the user wipes all input fields then nullify the record fields but do not delete the record
+			if (newDetails.ClientId == null && newDetails.ClientSecret.IsNullOrWhiteSpace())
+			{
+				IgClientId = null;
+				IgClientSecret = null;
+				IgRedirectUri = null;
+				IgToken = null;
+				IgTokenExpiry = null;
+				return;
+			}
+
 			IgClientId = newDetails.ClientId;
 			IgClientSecret = newDetails.ClientSecret;
 			IgRedirectUri = newDetails.RedirectUri;
 			IgToken = newDetails.Token;
+			IgTokenExpiry = newDetails.TokenExpiry;
 		}
 	}
 }

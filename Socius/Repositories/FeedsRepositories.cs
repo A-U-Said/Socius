@@ -1,10 +1,9 @@
-﻿using Socius.Dto.Commands;
-using Socius.Models.Repositories;
+﻿using Socius.Models.Repositories;
 using Umbraco.Cms.Infrastructure.Scoping;
 
 namespace Socius.Repositories
 {
-	public class FacebookCredentialsRepository : SociusRepository<FacebookCredentialsSchema, UpdateFacebookCredentialsCommand>, IFacebookCredentialsRepository
+	public class FacebookCredentialsRepository : SociusRepository<FacebookCredentialsSchema>, IFacebookCredentialsRepository
 	{
 		public FacebookCredentialsRepository(IScopeProvider scopeProvider) 
 			: base(scopeProvider, "FacebookCredentials", "ProfileId")

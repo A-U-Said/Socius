@@ -13,7 +13,7 @@ namespace Socius.Models.Repositories
 	{
 		[PrimaryKeyColumn(AutoIncrement = true)]
 		[Column("Id")]
-		public required int Id { get; set; }
+		public int Id { get; set; }
 		[Column("Name")]
 		public required string Name { get; set; }
 

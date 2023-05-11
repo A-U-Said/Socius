@@ -1,11 +1,8 @@
-﻿using Socius.Dto.Commands;
-using Socius.Models.Repositories;
+﻿using Socius.Models.Repositories;
 
 namespace Socius.Repositories
 {
-    public interface ISociusRepository<T,U>
-		where U : ISociusUpdateCommand
-		where T : ISociusSchema<U>
+    public interface ISociusRepository<T> where T : ISociusSchema
 	{
 		string GetDbName();
 		Task Create(T record);

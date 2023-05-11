@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Socius.Repositories;
 using Socius.Dto.Views.Profiles;
-using Umbraco.Cms.Core.Configuration.Models;
-using Umbraco.Cms.Core.IO;
-using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 using Socius.Dto.Commands;
 using Socius.Helpers;
+using Socius.Models.Repositories;
 
 namespace Socius.Controllers
 {
@@ -17,15 +13,18 @@ namespace Socius.Controllers
 	public class ProfilesController : UmbracoApiController
 	{
         private readonly ISociusProfileRepository _repository;
+		private readonly IFacebookCredentialsRepository _facebookCredentialsRepository;
 		private readonly ISociusProfilesHelper _profilesHelper;
 		private readonly ILogger<ProfilesController> _logger;
 
         public ProfilesController(
 			ISociusProfileRepository repository,
+			IFacebookCredentialsRepository facebookCredentialsRepository,
 			ISociusProfilesHelper profilesHelper,
             ILogger<ProfilesController> logger)
         {
             _repository = repository;
+			_facebookCredentialsRepository = facebookCredentialsRepository;
 			_profilesHelper = profilesHelper;
 			_logger = logger;
         }
@@ -74,8 +73,14 @@ namespace Socius.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateProfile(int profileId, [FromBody] SaveProfileCommand profile)
 		{
+			if (profile == null)
+			{
+				return BadRequest();
+			}
+
 			await _profilesHelper.UpdateProfile(profileId, profile);
 			return Ok();
 		}
+
 	}
 }

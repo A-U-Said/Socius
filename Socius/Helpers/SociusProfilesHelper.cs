@@ -7,7 +7,6 @@ using Umbraco.Cms.Core.Extensions;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Strings;
-using Umbraco.Cms.Web.Common.Security;
 
 namespace Socius.Helpers
 {
@@ -80,13 +79,11 @@ namespace Socius.Helpers
 			return profile.ProfileImage;
 		}
 
-		
-		private async Task UpdateAction<TSchema, TCommand>(TSchema? dbRecord, TCommand? command, ISociusRepository<TSchema, TCommand> repo) 
-			where TSchema : ISociusSchema<TCommand>
+
+		private async Task UpdateAction<TSchema, TCommand>(int profileId, TSchema? dbRecord, TCommand? command, ISociusRepository<TSchema> repo)
+			where TSchema : SociusUpdateCommand<TCommand>, ISociusSchema
 			where TCommand : ISociusUpdateCommand
 		{
-			//Command will never be null if a db record exists. Don't want to delete, just provide default values through update
-
 			if ((dbRecord != null) && (command != null)) //Update
 			{
 				dbRecord.Update(command);
@@ -95,7 +92,7 @@ namespace Socius.Helpers
 
 			if ((dbRecord == null) && (command != null)) //Create
 			{
-				var newRecord = dbRecord.Create();
+				var newRecord = (TSchema)Activator.CreateInstance(typeof(TSchema), profileId, command);
 				await repo.Create(newRecord);
 			}
 		}
@@ -114,21 +111,13 @@ namespace Socius.Helpers
 			}
 
 			var facebookDetails = await _facebookCredentialsRepository.GetSingle(profileId);
-			await UpdateAction(facebookDetails, profile.Feeds?.Facebook, _facebookCredentialsRepository);
+			await UpdateAction(profileId, facebookDetails, profile.Feeds?.Facebook, _facebookCredentialsRepository);
 
 			var instagramDetails = await _instagramCredentialsRepository.GetSingle(profileId);
-			if ((instagramDetails != null) && (profile.Feeds?.Instagram != null))
-			{
-				instagramDetails.Update(profile.Feeds.Instagram);
-				await _instagramCredentialsRepository.Update(instagramDetails);
-			}
+			await UpdateAction(profileId, instagramDetails, profile.Feeds?.Instagram, _instagramCredentialsRepository);
 
 			var twitterDetails = await _twitterCredentialsRepository.GetSingle(profileId);
-			if ((twitterDetails != null) && (profile.Feeds?.Twitter != null))
-			{
-				twitterDetails.Update(profile.Feeds.Twitter);
-				await _twitterCredentialsRepository.Update(twitterDetails);
-			}
+			await UpdateAction(profileId, twitterDetails, profile.Feeds?.Twitter, _twitterCredentialsRepository);
 
 			profileDetails.Update(profile);
 			await _repository.Update(profileDetails);

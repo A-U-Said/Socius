@@ -6,11 +6,11 @@ namespace Socius.Dto.Views.Profiles
 	{
 		public TwitterCredentialsView(TwitterCredentialsSchema dbResult) 
 		{
-			UserID = dbResult.TwUserID;
-			Token = dbResult.TwToken;
+			UserID = dbResult?.TwUserID;
+			Token = dbResult?.TwToken;
 		}
 
-		public long UserID { get; protected set; }
-		public string Token { get; protected set; }
+		public long? UserID { get; protected set; }
+		public string? Token { get; protected set; }
 	}
 }

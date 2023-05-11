@@ -1,12 +1,10 @@
 ﻿using Umbraco.Cms.Infrastructure.Scoping;
 using Socius.Models.Repositories;
-using Socius.Dto.Commands;
 
 namespace Socius.Repositories
 {
-	public class SociusRepository<T,U> : ISociusRepository<T,U>
-		where U : ISociusUpdateCommand
-		where T : ISociusSchema<U>
+	public class SociusRepository<T> : ISociusRepository<T>
+		where T : ISociusSchema
 	{
 		private readonly IScopeProvider _scopeProvider;
 		private readonly string _dbName;
@@ -54,6 +52,11 @@ namespace Socius.Repositories
 			using var scope = _scopeProvider.CreateScope();
 			var queryResults = await scope.Database.FetchAsync<T>($"SELECT * FROM {_dbName} WHERE {_primaryKey}={recordId}");
 			scope.Complete();
+
+			if (queryResults.Count == 0 )
+			{
+				return default;
+			}
 
 			return queryResults.First();
 		}
