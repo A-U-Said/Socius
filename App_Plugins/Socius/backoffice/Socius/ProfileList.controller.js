@@ -38,7 +38,7 @@ angular.module("umbraco").controller("Socius.ProfileListController", function ($
 	}
 	
 	vm.createNewProfile = () => {
-		console.log(profilesUri);
+		$location.path(`/${currentSection}/socius/profile/new`);
 	}
 	
 	vm.selectLayout = (selectedLayout) => {

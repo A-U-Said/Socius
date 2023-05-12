@@ -29,7 +29,9 @@
 									<umb-box-content class="block-form">
 										<umb-control-group label="App Id" alias="fbAppId">
 											<input 
-												type="text"
+												type="number"
+												min="1"
+												ng-keypress="vm.ensureNumberOnly($event)"
 												placeholder="Facebook App Id"
 												class="input-block-level"
 												ng-model="vm.profile.feeds.facebook.appId"
@@ -51,7 +53,9 @@
 										</umb-control-group>
 										<umb-control-group label="Page ID" alias="fbPageId">
 											<input 
-												type="text"
+												type="number"
+												min="1"
+												ng-keypress="vm.ensureNumberOnly($event)"
 												placeholder="Facebook Page Id"
 												class="input-block-level"
 												ng-model="vm.profile.feeds.facebook.pageID"
@@ -70,7 +74,9 @@
 									<umb-box-content class="block-form">
 										<umb-control-group label="Client Id" alias="igClientId">
 											<input 
-												type="text"
+												type="number"
+												min="1"
+												ng-keypress="vm.ensureNumberOnly($event)"
 												placeholder="Instagram Client Id"
 												class="input-block-level"
 												ng-model="vm.profile.feeds.instagram.clientId"
@@ -100,7 +106,9 @@
 									<umb-box-content class="block-form">
 										<umb-control-group label="User Id" alias="twUserID">
 											<input 
-												type="text"
+												type="number"
+												min="1"
+												ng-keypress="vm.ensureNumberOnly($event)"
 												placeholder="Twitter User Id"
 												class="input-block-level"
 												ng-model="vm.profile.feeds.twitter.userID"
@@ -126,7 +134,7 @@
 
 						</section>
 
-						<aside class="sc-profile-meta">
+						<aside class="sc-profile-meta" ng-if="!vm.isNewProfile">
 							<umb-box>
 								<umb-box-content>
 									<ng-form name="avatarForm" class="sc-profile-image-editor">
@@ -214,8 +222,7 @@
 							state="vm.page.saveButtonState"
 							button-style="success"
 							shortcut="ctrl+s"
-							label="Save"
-							label-key="buttons_save"
+							label="{{vm.isNewProfile ? 'Create' : 'Save'}}"
 							disabled="vm.loading">
 						</umb-button>
 					</umb-editor-footer-content-right>

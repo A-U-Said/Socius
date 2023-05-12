@@ -1,6 +1,9 @@
-angular.module("umbraco").controller("Socius.ProfileController", function ($scope, $location, formHelper, Upload, mediaHelper, SociusProfilesResource) {
+angular.module("umbraco").controller("Socius.ProfileController", function ($scope, $location, $routeParams, formHelper, Upload, mediaHelper, SociusProfilesResource) {
 	
 	var vm = this;
+	var profileId = $routeParams.id;
+	
+	vm.isNewProfile = (profileId == "new");
 	
 	vm.loading = false;
 
@@ -10,25 +13,63 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 	vm.maxFileSize = Umbraco.Sys.ServerVariables.umbracoSettings.maxFileSize + "KB";
 	vm.acceptedFileTypes = mediaHelper.formatFileTypes(Umbraco.Sys.ServerVariables.umbracoSettings.imageFileTypes);
 
-	vm.profile = {};
-
-	vm.breadcrumbs = [
-		{
-				"name": "profiles",
-				"path": "/socius/socius/profiles"
-		},
-		{
-				"name": vm.profile.name
+	vm.profile = {
+		name: null,
+		profileImage: null,
+		createdBy: null,
+		createDate: null,
+		updatedBy: null,
+		updateDate: null,
+		feeds: {
+			facebook: {
+				appId: null,
+				clientSecret: null,
+				pageID: null,
+				token: null
+			},
+			instagram: {
+				clientId: null,
+				clientSecret: null,
+				redirectUri: null,
+				token: null,
+				tokenExpiry: null
+			},
+			twitter: {
+				userID: null,
+				token: null
+			}
 		}
-	];
+	};
+
+	vm.breadcrumbs = [];
 
 	vm.init = () => {
-		vm.loading = true;
+		if (!vm.isNewProfile) {
+			vm.loading = true;
 
-		SociusProfilesResource.GetProfile(1)
-		.then(data => vm.profile = data);
-		
-		vm.loading = false;
+			SociusProfilesResource.GetProfile(profileId)
+			.then(data => {
+				vm.profile = data;
+				createBreadcrumbs();
+			});
+			
+			vm.loading = false;
+		}
+		else {
+			createBreadcrumbs();
+		}
+	}
+
+	const createBreadcrumbs = () => {
+		vm.breadcrumbs = [
+			{
+				"name": "profiles",
+				"path": "/socius/socius/profiles"
+			},
+			{
+				"name": !vm.isNewProfile ? vm.profile.name : ""
+			}
+		]
 	}
 	
 	vm.goToPage = (ancestor) => {
@@ -36,21 +77,30 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 	};
 	
 	vm.save = () => {
-		vm.page.saveButtonState = "busy";
-		vm.profile.updateDate = Date.now();
-
 		if (formHelper.submitForm({ scope: $scope })) {
-			SociusProfilesResource.UpdateProfile(1, vm.profile)
-			.then(data => {
-				console.log(data);
-				vm.page.saveButtonState = "success";
-			})
-			.catch(error => {
-				console.log(error);
-				vm.page.saveButtonState = "error";
-			});
+			if (!vm.isNewProfile) {
+				update();
+			}
+			else {
+				create();
+			}
 		}
 	};
+
+	const update = () => {
+		vm.page.saveButtonState = "busy";
+		SociusProfilesResource.UpdateProfile(profileId, vm.profile)
+		.then(data => {
+			vm.page.saveButtonState = "success";
+		})
+		.catch(error => {
+			vm.page.saveButtonState = "error";
+		});
+	}
+
+	const create = () => {
+		console.log(vm.profile);
+	}
 
 	vm.changeAvatar = (files) => {
 		if (files && files.length > 0) {
@@ -78,6 +128,13 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 
 	vm.clearAvatar = () => {
 		vm.profile.profileImage = null;
+	}
+
+	vm.ensureNumberOnly = (ev) => {
+		if (ev.charCode >= 48 && ev.charCode <= 57) {
+			return;
+		}
+		ev.preventDefault();
 	}
 
 	vm.init();

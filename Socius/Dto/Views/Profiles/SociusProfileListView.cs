@@ -9,15 +9,15 @@ namespace Socius.Dto.Views.Profiles
         public SociusProfileListView(SociusProfilesSchema dbResult)
         {
             var websites = new List<string>();
-            if (dbResult.Facebook != null)
+            if (dbResult.Facebook?.Token != null)
             {
                 websites.Add("Facebook");
             }
-            if (dbResult.Instagram != null)
+            if (dbResult.Instagram?.IgToken != null)
             {
                 websites.Add("Instagram");
             }
-            if (dbResult.Twitter != null)
+            if (dbResult.Twitter?.TwToken != null)
             {
                 websites.Add("Twitter");
             }
