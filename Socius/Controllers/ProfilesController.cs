@@ -5,7 +5,6 @@ using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 using Socius.Dto.Commands;
 using Socius.Helpers;
-using Socius.Models.Repositories;
 
 namespace Socius.Controllers
 {
@@ -13,18 +12,15 @@ namespace Socius.Controllers
 	public class ProfilesController : UmbracoApiController
 	{
         private readonly ISociusProfileRepository _repository;
-		private readonly IFacebookCredentialsRepository _facebookCredentialsRepository;
 		private readonly ISociusProfilesHelper _profilesHelper;
 		private readonly ILogger<ProfilesController> _logger;
 
-        public ProfilesController(
+		public ProfilesController(
 			ISociusProfileRepository repository,
-			IFacebookCredentialsRepository facebookCredentialsRepository,
 			ISociusProfilesHelper profilesHelper,
             ILogger<ProfilesController> logger)
         {
             _repository = repository;
-			_facebookCredentialsRepository = facebookCredentialsRepository;
 			_profilesHelper = profilesHelper;
 			_logger = logger;
         }
@@ -80,6 +76,43 @@ namespace Socius.Controllers
 
 			await _profilesHelper.UpdateProfile(profileId, profile);
 			return Ok();
+		}
+
+
+		[HttpPost]
+		public async Task<IActionResult> CreateProfile([FromBody] SaveProfileCommand newProfile)
+		{
+			if (newProfile == null)
+			{
+				return BadRequest();
+			}
+
+			var createdProfile = await _profilesHelper.CreateProfile(newProfile);
+
+			return Ok(createdProfile.Id);
+		}
+
+
+		[HttpDelete]
+		public async Task<IActionResult> DeleteProfile(int profileId)
+		{
+			var deleteResult = await _profilesHelper.DeleteProfile(profileId);
+
+			if (deleteResult == TaskStatus.Faulted)
+			{
+				return NotFound();
+			}
+
+			return Ok();
+		}
+
+
+		[HttpGet]
+		public async Task<IActionResult> Test()
+		{
+			var profiles = await _repository.GetProfileList();
+
+			return Ok(profiles);
 		}
 
 	}

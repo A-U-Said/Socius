@@ -43,7 +43,8 @@ namespace Socius.Helpers
 			_backOfficeSecurityAccessor = backOfficeSecurityAccessor;
 		}
 
-		public async Task<string> SetProfileImage(int profileId, IList<IFormFile> file)
+
+		public async Task<string?> SetProfileImage(int profileId, IList<IFormFile> file)
 		{
 			if (file == null || file.Count == 0)
 			{
@@ -121,6 +122,40 @@ namespace Socius.Helpers
 
 			profileDetails.Update(profile);
 			await _repository.Update(profileDetails);
+		}
+
+
+		public async Task<SociusProfilesSchema> CreateProfile(SaveProfileCommand newProfileDetails)
+		{
+			var userId = _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?.Id ?? -1;
+
+			var newProfile = new SociusProfilesSchema(newProfileDetails, userId);
+			var createdProfile = await _repository.Create(newProfile);
+
+			var newFbRecord = new FacebookCredentialsSchema(createdProfile.Id, newProfileDetails.Feeds.Facebook);
+			await _facebookCredentialsRepository.Create(newFbRecord);
+
+			var newIgRecord = new InstagramCredentialsSchema(createdProfile.Id, newProfileDetails.Feeds.Instagram);
+			await _instagramCredentialsRepository.Create(newIgRecord);
+
+			var newTwRecord = new TwitterCredentialsSchema(createdProfile.Id, newProfileDetails.Feeds.Twitter);
+			await _twitterCredentialsRepository.Create(newTwRecord);
+
+			return createdProfile;
+		}
+
+
+		public async Task<TaskStatus> DeleteProfile(int profileId)
+		{
+			var profileDetails = await _repository.GetProfileDetails(profileId);
+			if (profileDetails == null)
+			{
+				return TaskStatus.Faulted;
+			}
+
+			await _repository.Delete(profileDetails);
+
+			return TaskStatus.RanToCompletion;
 		}
 	}
 }

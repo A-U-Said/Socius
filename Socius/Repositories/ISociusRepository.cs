@@ -5,7 +5,7 @@ namespace Socius.Repositories
     public interface ISociusRepository<T> where T : ISociusSchema
 	{
 		string GetDbName();
-		Task Create(T record);
+		Task<T> Create(T record);
 		Task<ICollection<T>> GetAll();
 		Task<T?> GetSingle(int recordId);
 		Task<IEnumerable<T>?> GetBy(Func<T, bool> condition);

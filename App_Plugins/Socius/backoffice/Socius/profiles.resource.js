@@ -27,6 +27,20 @@ angular.module('umbraco.resources').factory('SociusProfilesResource', function($
       );
     },
 
+    CreateProfile: (profileData) => {
+      return umbRequestHelper.resourcePromise(
+        $http.post(`${baseUrl}/CreateProfile`, profileData),
+        'Failed to create Socius profile'
+      );
+    },
+
+    DeleteProfile: (profileId) => {
+      return umbRequestHelper.resourcePromise(
+        $http.delete(`${baseUrl}/DeleteProfile?profileId=${profileId}`),
+        'Failed to delete Socius profile'
+      );
+    }
+
   }
 
 }); 

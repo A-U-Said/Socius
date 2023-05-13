@@ -22,11 +22,13 @@ namespace Socius.Repositories
 			return _dbName;
 		}
 
-		public virtual async Task Create(T record)
+		public virtual async Task<T> Create(T record)
 		{
 			using var scope = _scopeProvider.CreateScope();
 			await scope.Database.InsertAsync(record);
 			scope.Complete();
+
+			return record;
 		}
 
 		public virtual async Task<ICollection<T>> GetAll()

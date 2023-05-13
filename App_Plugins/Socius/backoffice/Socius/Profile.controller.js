@@ -1,7 +1,8 @@
-angular.module("umbraco").controller("Socius.ProfileController", function ($scope, $location, $routeParams, formHelper, Upload, mediaHelper, SociusProfilesResource) {
+angular.module("umbraco").controller("Socius.ProfileController", function ($scope, $location, $routeParams, formHelper, Upload, mediaHelper, appState, overlayService, SociusProfilesResource) {
 	
 	var vm = this;
 	var profileId = $routeParams.id;
+	var currentSection = appState.getSectionState("currentSection");
 	
 	vm.isNewProfile = (profileId == "new");
 	
@@ -76,14 +77,18 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 		$location.path(ancestor.path);
 	};
 	
-	vm.save = () => {
+	vm.save = async () => {
 		if (formHelper.submitForm({ scope: $scope })) {
 			if (!vm.isNewProfile) {
 				update();
 			}
 			else {
-				create();
+				var newProfileId = await create();
 			}
+		}
+		if (newProfileId != null) {
+			formHelper.resetForm({ scope: $scope });
+			$location.path(`/${currentSection}/socius/profile/${newProfileId}`);
 		}
 	};
 
@@ -99,7 +104,16 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 	}
 
 	const create = () => {
-		console.log(vm.profile);
+		vm.page.saveButtonState = "busy";
+		return SociusProfilesResource.CreateProfile(vm.profile)
+		.then(data => {
+			vm.page.saveButtonState = "success";
+			return data;
+		})
+		.catch(error => {
+			vm.page.saveButtonState = "error";
+			return null;
+		});
 	}
 
 	vm.changeAvatar = (files) => {
@@ -135,6 +149,31 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 			return;
 		}
 		ev.preventDefault();
+	}
+
+	vm.deleteProfile = () => {
+		const overlay = {
+			view: "confirm",
+			title: "Delete Profile",
+			content: "This will permanently delete this profile and any page feeds using it will no longer work. Are you sure that you want to do this?",
+			closeButtonLabel: "Cancel",
+			submitButtonLabel: "Delete",
+			submitButtonStyle: "danger",
+			close: () => {
+				overlayService.close();
+			},
+			submit: () => {
+				SociusProfilesResource.DeleteProfile(vm.profile.id)
+				.then(data => {
+					vm.goToPage(vm.breadcrumbs[0]);
+				})
+				.catch(error => {
+					console.log(error);
+				});
+				overlayService.close();
+			}
+		};
+		overlayService.open(overlay);
 	}
 
 	vm.init();

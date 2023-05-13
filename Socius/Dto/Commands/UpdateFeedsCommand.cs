@@ -13,9 +13,9 @@
 
 	public class UpdateFeedsCommand
 	{
-		public UpdateFacebookCredentialsCommand? Facebook { get; set; }
-		public UpdateInstagramCredentialsCommand? Instagram { get; set; }
-		public UpdateTwitterCredentialsCommand? Twitter { get; set; }
+		public UpdateFacebookCredentialsCommand Facebook { get; set; }
+		public UpdateInstagramCredentialsCommand Instagram { get; set; }
+		public UpdateTwitterCredentialsCommand Twitter { get; set; }
 	}
 
 	public class UpdateFacebookCredentialsCommand : ISociusUpdateCommand

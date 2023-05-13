@@ -1,4 +1,6 @@
-﻿using Socius.Models.Repositories;
+﻿using NPoco;
+using Socius.Models.Repositories;
+using Umbraco.Cms.Infrastructure.Persistence;
 
 namespace Socius.Repositories
 {

@@ -1,6 +1,7 @@
 ﻿using NPoco;
 using Socius.Dto.Commands;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 using Umbraco.Cms.Infrastructure.Persistence.Dtos;
 
@@ -11,9 +12,23 @@ namespace Socius.Models.Repositories
 	[ExplicitColumns]
 	public class SociusProfilesSchema : ISociusSchema
 	{
+		public SociusProfilesSchema() { }
+
+		[SetsRequiredMembers]
+		public SociusProfilesSchema(SaveProfileCommand newDetails, int createdById)
+		{
+			Name = newDetails.Name;
+			ProfileImage = newDetails.ProfileImage;
+			CreatedBy = createdById;
+			CreateDate = DateTime.Now;
+			UpdatedBy = createdById;
+			UpdateDate = DateTime.Now;
+		}
+
 		[PrimaryKeyColumn(AutoIncrement = true)]
 		[Column("Id")]
 		public int Id { get; set; }
+
 		[Column("Name")]
 		public required string Name { get; set; }
 
@@ -39,15 +54,15 @@ namespace Socius.Models.Repositories
 		public required DateTime UpdateDate { get; set; }
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ReferenceMemberName = "ProfileId")]
+		[Reference(ReferenceType.OneToOne, ColumnName = "Id", ReferenceMemberName = "Id")]
 		public FacebookCredentialsSchema? Facebook { get; set; }
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ReferenceMemberName = "ProfileId")]
+		[Reference(ReferenceType.OneToOne, ColumnName = "ProfileId", ReferenceMemberName = "ProfileId")]
 		public InstagramCredentialsSchema? Instagram { get; set; }
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ReferenceMemberName = "ProfileId")]
+		[Reference(ReferenceType.OneToOne, ColumnName = "ProfileId", ReferenceMemberName = "ProfileId")]
 		public TwitterCredentialsSchema? Twitter { get; set; }
 
 
