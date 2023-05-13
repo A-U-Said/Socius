@@ -23,15 +23,17 @@ namespace Socius.Models.Repositories
 			TwToken = details.Token;
 		}
 
-
-		[PrimaryKeyColumn(AutoIncrement = false), ForeignKey(typeof(SociusProfilesSchema), Column = "Id", OnDelete = Rule.Cascade)]
 		[Column("ProfileId")]
+		[PrimaryKeyColumn(AutoIncrement = false)]
+		[ForeignKey(typeof(SociusProfilesSchema), Column = "Id", OnDelete = Rule.Cascade)]
 		public required int ProfileId { get; set; }
 
-		[Column("TwUserID"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("TwUserID")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public long? TwUserID { get; set; }
 
-		[Column("TwToken"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("TwToken")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		[SpecialDbType(SpecialDbTypes.NVARCHARMAX)]
 		public string? TwToken { get; set; }
 

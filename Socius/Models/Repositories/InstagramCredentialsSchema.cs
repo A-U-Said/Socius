@@ -24,24 +24,30 @@ namespace Socius.Models.Repositories
 			IgTokenExpiry = details.TokenExpiry;
 		}
 
-		[PrimaryKeyColumn(AutoIncrement = false), ForeignKey(typeof(SociusProfilesSchema), Column = "Id", OnDelete = Rule.Cascade)]
 		[Column("ProfileId")]
+		[PrimaryKeyColumn(AutoIncrement = false)]
+		[ForeignKey(typeof(SociusProfilesSchema), Column = "Id", OnDelete = Rule.Cascade)]
 		public required int ProfileId { get; set; }
 
-		[Column("IgClientId"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("IgClientId")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public long? IgClientId { get; set; }
 
-		[Column("IgClientSecret"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("IgClientSecret")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public string? IgClientSecret { get; set; }
 
-		[Column("IgRedirectUri"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("IgRedirectUri")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public string? IgRedirectUri { get; set; }
 
-		[Column("IgToken"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("IgToken")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		[SpecialDbType(SpecialDbTypes.NVARCHARMAX)]
 		public string? IgToken { get; set; }
 
-		[Column("IgTokenExpiry"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("IgTokenExpiry")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public DateTime? IgTokenExpiry { get; set; }
 
 		public override void Update(UpdateInstagramCredentialsCommand newDetails)

@@ -25,17 +25,19 @@ namespace Socius.Models.Repositories
 			UpdateDate = DateTime.Now;
 		}
 
-		[PrimaryKeyColumn(AutoIncrement = true)]
 		[Column("Id")]
+		[PrimaryKeyColumn(AutoIncrement = true)]
 		public int Id { get; set; }
 
 		[Column("Name")]
 		public required string Name { get; set; }
 
-		[Column("ProfileImage"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("ProfileImage")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public string? ProfileImage { get; set; }
 
-		[Column("CreatedBy"), ForeignKey(typeof(UserDto), Column = "Id", Name = "FK_SociusProfiles_umbracoUser_Id_CreatedBy", OnDelete = Rule.None)]
+		[Column("CreatedBy")]
+		[ForeignKey(typeof(UserDto), Column = "Id", Name = "FK_SociusProfiles_umbracoUser_Id_CreatedBy", OnDelete = Rule.None)]
 		public required int CreatedBy { get; set; }
 
 		[ResultColumn]
@@ -44,7 +46,8 @@ namespace Socius.Models.Repositories
 		[Column("CreateDate")]
 		public required DateTime CreateDate { get; set; }
 
-		[Column("UpdatedBy"), ForeignKey(typeof(UserDto), Column = "Id", Name = "FK_SociusProfiles_umbracoUser_Id_UpdatedBy", OnDelete = Rule.None)]
+		[Column("UpdatedBy")]
+		[ForeignKey(typeof(UserDto), Column = "Id", Name = "FK_SociusProfiles_umbracoUser_Id_UpdatedBy", OnDelete = Rule.None)]
 		public required int UpdatedBy { get; set; }
 
 		[ResultColumn]
@@ -54,16 +57,16 @@ namespace Socius.Models.Repositories
 		public required DateTime UpdateDate { get; set; }
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ColumnName = "Id", ReferenceMemberName = "Id")]
-		public FacebookCredentialsSchema? Facebook { get; set; }
+		[Reference(ReferenceType.OneToOne, ColumnName = "Id")]
+		public FacebookCredentialsSchema Facebook { get; set; }
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ColumnName = "ProfileId", ReferenceMemberName = "ProfileId")]
-		public InstagramCredentialsSchema? Instagram { get; set; }
+		[Reference(ReferenceType.OneToOne, ColumnName = "Id")]
+		public InstagramCredentialsSchema Instagram { get; set; }
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ColumnName = "ProfileId", ReferenceMemberName = "ProfileId")]
-		public TwitterCredentialsSchema? Twitter { get; set; }
+		[Reference(ReferenceType.OneToOne, ColumnName = "Id")]
+		public TwitterCredentialsSchema Twitter { get; set; }
 
 
 		public void SetProfileImage(string imageUri)

@@ -110,9 +110,7 @@ namespace Socius.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Test()
 		{
-			var profiles = await _repository.GetProfileList();
-
-			return Ok(profiles);
+			return Ok();
 		}
 
 	}

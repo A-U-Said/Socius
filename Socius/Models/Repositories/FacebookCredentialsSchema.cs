@@ -27,20 +27,25 @@ namespace Socius.Models.Repositories
 		}
 
 
-		[PrimaryKeyColumn(AutoIncrement = false), ForeignKey(typeof(SociusProfilesSchema), Column = "Id", OnDelete = Rule.Cascade)]
 		[Column("ProfileId")]
+		[PrimaryKeyColumn(AutoIncrement = false)]
+		[ForeignKey(typeof(SociusProfilesSchema), Column = "Id", OnDelete = Rule.Cascade)]
 		public required int ProfileId { get; set; }
 
-		[Column("FbAppId"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("FbAppId")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public long? AppId { get; set; }
 
-		[Column("FbClientSecret"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("FbClientSecret")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public string? ClientSecret { get; set; }
 
-		[Column("FbPageID"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("FbPageID")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		public long? PageID { get; set; }
 
-		[Column("FbToken"), NullSetting(NullSetting = NullSettings.Null)]
+		[Column("FbToken")]
+		[NullSetting(NullSetting = NullSettings.Null)]
 		[SpecialDbType(SpecialDbTypes.NVARCHARMAX)]
 		public string? Token { get; set; }
 
