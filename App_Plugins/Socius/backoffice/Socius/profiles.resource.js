@@ -1,6 +1,8 @@
 angular.module('umbraco.resources').factory('SociusProfilesResource', function($q, $http, umbRequestHelper) {
 
   const baseUrl = "Socius/Profiles";
+  const instagramBaseUrl = "Socius/Instagram";
+  const facebookBaseUrl = "Socius/Facebook";
 
   return {
 
@@ -38,6 +40,27 @@ angular.module('umbraco.resources').factory('SociusProfilesResource', function($
       return umbRequestHelper.resourcePromise(
         $http.delete(`${baseUrl}/DeleteProfile?profileId=${profileId}`),
         'Failed to delete Socius profile'
+      );
+    },
+
+    ClearIgToken: (profileId) => {
+      return umbRequestHelper.resourcePromise(
+        $http.delete(`${instagramBaseUrl}/ClearIgToken?profileId=${profileId}`),
+        'Failed to clear Instagram token'
+      );
+    },
+
+    ClearFbToken: (profileId) => {
+      return umbRequestHelper.resourcePromise(
+        $http.delete(`${facebookBaseUrl}/ClearFbToken?profileId=${profileId}`),
+        'Failed to clear Facebook token'
+      );
+    },
+
+    ExchangeFbUserToken: (profileId, shortUserToken) => {
+      return umbRequestHelper.resourcePromise(
+        $http.post(`${facebookBaseUrl}/GetPageToken?profileId=${profileId}`, shortUserToken),
+        'Failed get Facebook page token'
       );
     }
 

@@ -1,8 +1,9 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using Socius.Extensions;
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
-@using Umbraco.Cms.Core.Models;
 @{
 	Layout = null;
-	var link = Model.Value<Link>("link");
 }
+
+@Model.GetSocialMedia(Model.Socius)

@@ -153,3 +153,6 @@
 .sc-profile-credentials input[type=number] {
   -moz-appearance: textfield;
 }
+.sc-profile-credentials button {
+  margin-right: 4px;
+}

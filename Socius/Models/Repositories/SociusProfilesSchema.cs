@@ -40,9 +40,6 @@ namespace Socius.Models.Repositories
 		[ForeignKey(typeof(UserDto), Column = "Id", Name = "FK_SociusProfiles_umbracoUser_Id_CreatedBy", OnDelete = Rule.None)]
 		public required int CreatedBy { get; set; }
 
-		[ResultColumn]
-		public string CreatedByName { get; set; }
-
 		[Column("CreateDate")]
 		public required DateTime CreateDate { get; set; }
 
@@ -50,23 +47,28 @@ namespace Socius.Models.Repositories
 		[ForeignKey(typeof(UserDto), Column = "Id", Name = "FK_SociusProfiles_umbracoUser_Id_UpdatedBy", OnDelete = Rule.None)]
 		public required int UpdatedBy { get; set; }
 
-		[ResultColumn]
-		public string UpdatedByName { get; set; }
-
 		[Column("UpdateDate")]
 		public required DateTime UpdateDate { get; set; }
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ColumnName = "Id")]
-		public FacebookCredentialsSchema Facebook { get; set; }
+		[Reference(ReferenceType.OneToOne, ColumnName = "Id", ReferenceMemberName = "ProfileId")]
+		public FacebookCredentialsSchema Facebook { get; set; } = null!;
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ColumnName = "Id")]
-		public InstagramCredentialsSchema Instagram { get; set; }
+		[Reference(ReferenceType.OneToOne, ColumnName = "Id", ReferenceMemberName = "ProfileId")]
+		public InstagramCredentialsSchema Instagram { get; set; } = null!;
 
 		[ResultColumn]
-		[Reference(ReferenceType.OneToOne, ColumnName = "Id")]
-		public TwitterCredentialsSchema Twitter { get; set; }
+		[Reference(ReferenceType.OneToOne, ColumnName = "Id", ReferenceMemberName = "ProfileId")]
+		public TwitterCredentialsSchema Twitter { get; set; } = null!;
+
+		[ResultColumn]
+		[Reference(ReferenceType.OneToOne, ColumnName = "CreatedBy")]
+		public UserDto Creator { get; set; } = null!;
+
+		[ResultColumn]
+		[Reference(ReferenceType.OneToOne, ColumnName = "UpdatedBy")]
+		public UserDto Updater { get; set; } = null!;
 
 
 		public void SetProfileImage(string imageUri)

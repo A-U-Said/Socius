@@ -1,0 +1,15 @@
+<div ng-controller="Socius.FeedEditorController">
+
+	<select 
+		name="dropDownList"
+		class="umb-property-editor umb-dropdown"
+		ng-change="updateSingleDropdownValue()"
+		ng-model="model.value"
+		ng-required="model.validation.mandatory"
+		ng-disabled="readonly"
+	>
+		<option value="">Select your option</option>
+		<option ng-repeat="sociusProfile in sociusProfiles"	value="{{sociusProfile.id}}">{{sociusProfile.name}}</option>
+	</select>
+	
+</div>

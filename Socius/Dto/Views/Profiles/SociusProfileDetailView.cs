@@ -6,10 +6,10 @@ namespace Socius.Dto.Views.Profiles
     {
 		public SociusProfileDetailView(SociusProfilesSchema dbResult): base(dbResult)
         {
-			CreatedBy = dbResult.CreatedByName;
+			CreatedBy = dbResult.Creator.UserName;
 			CreateDate = dbResult.CreateDate;
-			UpdatedBy = dbResult.UpdatedByName;
-            Feeds = new FeedsView(dbResult.Facebook, dbResult.Instagram, dbResult.Twitter);
+			UpdatedBy = dbResult.Updater.UserName;
+			Feeds = new FeedsView(dbResult.Facebook, dbResult.Instagram, dbResult.Twitter);
         }
 
 		public string CreatedBy { get; protected set; }

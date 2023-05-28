@@ -5,6 +5,7 @@ using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 using Socius.Dto.Commands;
 using Socius.Helpers;
+using Socius.Models.Repositories;
 
 namespace Socius.Controllers
 {
@@ -103,13 +104,6 @@ namespace Socius.Controllers
 				return NotFound();
 			}
 
-			return Ok();
-		}
-
-
-		[HttpGet]
-		public async Task<IActionResult> Test()
-		{
 			return Ok();
 		}
 

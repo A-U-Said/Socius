@@ -64,6 +64,8 @@
 												id="fbPageId"
 												ng-required="false" />
 										</umb-control-group>
+										<button ng-if="vm.profile.feeds.facebook.token != null" type="button" class="btn btn-danger" ng-click="vm.clearFbToken()">Clear Facebook Token</button>
+										<button ng-if="vm.profile.feeds.facebook.token == null" type="button" class="btn btn-success" ng-click="vm.newFbLogin()">New Facebook login</button>
 									</umb-box-content>
 								</ng-form>
 							</umb-box>
@@ -96,6 +98,9 @@
 												id="igClientSecret"
 												ng-required="false" />
 										</umb-control-group>
+										<button ng-if="vm.profile.feeds.instagram.token == null && vm.profile.feeds.instagram.clientId != clientId && vm.profile.feeds.instagram.redirectUri != null" type="button" class="btn btn-success" ng-click="vm.newIgLogin()">New Instagram login</button>
+            				<button ng-if="vm.profile.feeds.instagram.token != null" type="button" class="btn btn-danger" ng-click="vm.clearIgToken()">Clear Instagram Token</button>
+										<button ng-if="vm.profile.feeds.instagram.token != null" type="button" class="btn" ng-click="vm.refreshIgToken()">Refresh Instagram Token</button>
 									</umb-box-content>
 								</ng-form>
 							</umb-box>

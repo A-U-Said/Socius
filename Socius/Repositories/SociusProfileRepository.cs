@@ -101,7 +101,7 @@ namespace Socius.Repositories
 			return queryResults.FirstOrDefault();
 		}
 
-		public async Task<ICollection<SociusProfilesSchema>> GetProfileList()
+		public async Task<ICollection<SociusProfilesSchema>> GetProfileListPoco()
 		{
 			using var scope = _scopeProvider.CreateScope();
 
@@ -126,7 +126,7 @@ namespace Socius.Repositories
 		}
 
 		//Moved to NPOCO syntax in the hopes that a single aggregate root can be used. Still doesn't work.
-		public async Task<SociusProfilesSchema?> GetProfileDetails(int profileId)
+		public async Task<SociusProfilesSchema?> GetProfileDetailsPoco(int profileId)
 		{
 			using var scope = _scopeProvider.CreateScope();
 
@@ -155,6 +155,44 @@ namespace Socius.Repositories
 			scope.Complete();
 
 			return queryResults.FirstOrDefault();
+		}
+
+		//Finally managed to get reference decorators to work and reduced get to this. Keeping old versions as reminders on POCO syntax and SQL counterpart.
+		public async Task<ICollection<SociusProfilesSchema>> GetProfileList()
+		{
+			using var scope = _scopeProvider.CreateScope();
+			var queryResults = await scope.Database.QueryAsync<SociusProfilesSchema>()
+				.Include(x => x.Facebook)
+				.Include(x => x.Instagram)
+				.Include(x => x.Twitter)
+				.Include(x => x.Creator)
+				.Include(x => x.Updater)
+				.ToList();
+			scope.Complete();
+
+			return queryResults;
+		}
+
+		public async Task<SociusProfilesSchema?> GetProfileDetails(int profileId)
+		{
+			using var scope = _scopeProvider.CreateScope();
+			var queryResults = await scope.Database.QueryAsync<SociusProfilesSchema>()
+				.Include(x => x.Facebook)
+				.Include(x => x.Instagram)
+				.Include(x => x.Twitter)
+				.Include(x => x.Creator)
+				.Include(x => x.Updater)
+				.Where(x => x.Id == profileId)
+				.ToList();
+			scope.Complete();
+
+			return queryResults.FirstOrDefault();
+		}
+
+		public async Task Ee(SociusProfilesSchema i)
+		{
+			using var scope = _scopeProvider.CreateScope();
+			await scope.Database.SaveAsync(i);
 		}
 
 	}

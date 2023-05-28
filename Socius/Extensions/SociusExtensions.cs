@@ -1,20 +1,26 @@
-﻿using System.Data;
-using Examine;
-using Microsoft.Extensions.Options;
-using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Configuration.Models;
-using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PublishedCache;
-using Umbraco.Cms.Core.Routing;
-using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Core.Web;
+﻿using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Socius.Extensions;
 
 public static class SociusExtensions
 {
-	public static object? GetSocialMedia(this IPublishedContent content, int profileId)
+	public static object? GetSocialMedia(this IPublishedContent content, object? profileId)
 	{
-		return null;
+		if (profileId == null || !(profileId is int))
+		{
+			return null;
+		}
+
+		return profileId;
+	}
+
+	public static T ThrowIfNull<T>(this T source, string errorMessage)
+	{
+		if (source != null)
+		{
+			return source;
+		}
+
+		throw new ArgumentNullException(nameof(source), errorMessage);
 	}
 }

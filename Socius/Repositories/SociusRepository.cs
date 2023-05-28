@@ -52,15 +52,15 @@ namespace Socius.Repositories
 		public virtual async Task<T?> GetSingle(int recordId)
 		{
 			using var scope = _scopeProvider.CreateScope();
-			var queryResults = await scope.Database.FetchAsync<T>($"SELECT * FROM {_dbName} WHERE {_primaryKey}={recordId}");
+			var queryResult = await scope.Database.SingleByIdAsync<T>(recordId);
 			scope.Complete();
 
-			if (queryResults.Count == 0 )
+			if (queryResult == null )
 			{
 				return default;
 			}
 
-			return queryResults.First();
+			return queryResult;
 		}
 
 		public virtual async Task Update(T record)

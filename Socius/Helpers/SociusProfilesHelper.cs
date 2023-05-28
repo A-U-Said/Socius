@@ -67,7 +67,7 @@ namespace Socius.Helpers
 
 			if (SociusConstants.Media.AllowedImageExtensions.Contains(ext) == true)
 			{
-				var newImagePath = $"/media/SociusAvatars/{(profile.Id + safeFileName).GenerateHash<SHA1>()}.{ext}";
+				var newImagePath = $"{SociusConstants.Media.AvatarDirectory}/{(profile.Id + safeFileName).GenerateHash<SHA1>()}.{ext}";
 
 				profile.SetProfileImage(newImagePath);
 
@@ -91,7 +91,7 @@ namespace Socius.Helpers
 				await repo.Update(dbRecord);
 			}
 
-			if ((dbRecord == null) && (command != null)) //Create
+			if ((dbRecord == null) && (command != null)) //Should never need to create as feed records are created at profile creation. This is just in case someone deletes a record from the DB.
 			{
 				var newRecord = (TSchema)Activator.CreateInstance(typeof(TSchema), profileId, command);
 				await repo.Create(newRecord);
@@ -125,6 +125,8 @@ namespace Socius.Helpers
 		}
 
 
+		//Would love to be able to update multiple tables using references, nested objects, and a single aggregate root, but apparently not.
+		//https://github.com/schotime/NPoco/issues/483
 		public async Task<SociusProfilesSchema> CreateProfile(SaveProfileCommand newProfileDetails)
 		{
 			var userId = _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?.Id ?? -1;

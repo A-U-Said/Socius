@@ -14,6 +14,8 @@ namespace Socius.DI
 			builder.Services.AddSingleton<ITwitterCredentialsRepository, TwitterCredentialsRepository>();
 
 			builder.Services.AddSingleton<ISociusProfilesHelper, SociusProfilesHelper>();
+			builder.Services.AddSingleton<IInstagramHelper, InstagramHelper>();
+			builder.Services.AddSingleton<IFacebookHelper, FacebookHelper>();
 		}
 	}
 }

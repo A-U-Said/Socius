@@ -6,7 +6,9 @@
 		"~/App_Plugins/Socius/backoffice/Socius/ProfilesHelp.controller.js",
 		"~/App_Plugins/Socius/backoffice/Socius/UserInteraction.controller.js",
 		"~/App_Plugins/Socius/backoffice/Socius/Welcome.controller.js",
+		"~/App_Plugins/Socius/PropertyEditors/SociusFeedEditor.controller.js",
 		"~/App_Plugins/Socius/backoffice/Socius/profiles.resource.js",
+		"~/App_Plugins/Socius/MetaSdk.js",
 	],
 	"css": [
 		"~/App_Plugins/Socius/backoffice/Socius/Socius.css"
