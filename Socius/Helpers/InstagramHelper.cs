@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Socius.Extensions;
-using Socius.Models.ApiResponses;
 using Socius.Models.Repositories;
 using Socius.Repositories;
+using Socius.Models.ApiResponses.Instagram;
 using System.Net;
 
 namespace Socius.Helpers
 {
-	public class InstagramHelper : IInstagramHelper
+    public class InstagramHelper : IInstagramHelper
 	{
 		private readonly IInstagramCredentialsRepository _repository;
 		private readonly ILogger<InstagramHelper> _logger;

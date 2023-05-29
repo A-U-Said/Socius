@@ -69,5 +69,16 @@ namespace Socius.Models.Repositories
 			IgToken = newDetails.Token;
 			IgTokenExpiry = newDetails.TokenExpiry;
 		}
+
+		public bool IsComplete()
+		{
+			return (
+				IgClientId != null 
+				&& IgClientSecret != null
+				&& IgRedirectUri != null
+				&& IgTokenExpiry != null
+				&& !IgToken.IsNullOrWhiteSpace()
+			);
+		}
 	}
 }

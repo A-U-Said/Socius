@@ -1,32 +1,11 @@
-﻿using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Composing;
-using Umbraco.Cms.Core.IO;
+﻿using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.Validators;
-using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Core.WebAssets;
 
 namespace Socius.PropertyEditors
 {
-
-	//public class SociusFeedEditorScript : JavaScriptFile
-	//{
-	//	public SociusFeedEditorScript()
-	//		: base("/App_Plugins/Socius/PropertyEditors/SociusFeedEditor.controller.js")
-	//	{
-	//	}
-	//}
-
-	//public class SectionComposer : IComposer
-	//{
-	//	public void Compose(IUmbracoBuilder builder)
-	//	{
-	//		builder.BackOfficeAssets().Append<SociusFeedEditorScript>();
-	//	}
-	//}
-
 
 	[DataEditor(
 		SociusConstants.Application.FeedPropertyEditorAlias, 

@@ -235,7 +235,7 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 	vm.newIgLogin = () => {
 		var { clientId, redirectUri } = vm.profile.feeds.instagram;
 		var instaLogin = window.open(
-			`https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`,
+			`https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code&state=${profileId}`,
 			"_blank", 
 			"popup, width=375, height=505, toolbar=no, location=no, status=no, menubar=no"
 		);

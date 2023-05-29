@@ -67,5 +67,15 @@ namespace Socius.Models.Repositories
 			PageID = newDetails.PageID;
 			Token = newDetails.Token;
 		}
+
+		public bool IsComplete()
+		{
+			return (
+				AppId != null
+				&& ClientSecret != null
+				&& PageID != null
+				&& Token != null
+			);
+		}
 	}
 }

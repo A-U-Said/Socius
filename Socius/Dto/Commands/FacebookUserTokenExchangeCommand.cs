@@ -1,4 +1,4 @@
-﻿namespace Socius.Socius.Dto.Commands
+﻿namespace Socius.Dto.Commands
 {
 	public class FacebookUserTokenExchangeCommand
 	{

@@ -88,6 +88,9 @@ namespace Socius.Controllers
 				return BadRequest();
 			}
 
+			var instagramCallbackUrl = $"https://{Request.Host}/{SociusConstants.Urls.InstagramCallbackUrl}";
+			newProfile.Feeds.Instagram.RedirectUri = instagramCallbackUrl;
+
 			var createdProfile = await _profilesHelper.CreateProfile(newProfile);
 
 			return Ok(createdProfile.Id);

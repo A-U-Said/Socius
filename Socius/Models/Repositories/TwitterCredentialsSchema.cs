@@ -52,5 +52,13 @@ namespace Socius.Models.Repositories
 			TwToken = newDetails.Token;
 		}
 
+		public bool IsComplete()
+		{
+			return (
+				TwUserID != null 
+				&& TwToken != null
+			);
+		}
+
 	}
 }

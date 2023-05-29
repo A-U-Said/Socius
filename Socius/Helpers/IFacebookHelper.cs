@@ -1,5 +1,5 @@
 ﻿using Socius.Models.Repositories;
-using Socius.Socius.Dto.Commands;
+using Socius.Dto.Commands;
 
 namespace Socius.Helpers
 {

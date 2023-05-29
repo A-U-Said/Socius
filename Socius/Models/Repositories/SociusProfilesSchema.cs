@@ -82,5 +82,10 @@ namespace Socius.Models.Repositories
 			ProfileImage = newDetails.ProfileImage;
 			UpdateDate = DateTime.Now;
 		}
+
+		public bool IsComplete()
+		{
+			return true;
+		}
 	}
 }

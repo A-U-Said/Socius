@@ -4,6 +4,93 @@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @{
 	Layout = null;
+	var feeds = Model.GetSocialMedia(Model.Socius);
 }
 
-@Model.GetSocialMedia(Model.Socius)
+<style>
+	.feed {
+		display: flex;
+		flex-flow: row wrap;
+	}
+	.post {
+		box-sizing: border-box;
+		margin: 8px 8px;
+		background-color: #56a5cf;
+		width: 400px;
+		padding: 4px;
+	}
+	.post > a {
+		display: flex;
+		flex-flow: row nowrap;
+		color: inherit;
+		text-decoration: none;
+	}
+	.post > a > img {
+		max-width: 150px;
+		margin-right: 8px;
+	}
+
+</style>
+
+
+<h1>Socius Feeds</h1>
+
+
+<h3>Facebook</h3>
+<section class="feed">
+	@foreach (var fbPost in feeds.FacebookPosts)
+	{
+		<article class="post">
+			<a href="@fbPost.PermalinkUrl" rel="nofollow" target="_blank">
+				@if (!fbPost.FullPicture.IsNullOrWhiteSpace())
+				{
+					<img src="@fbPost.FullPicture" />
+				}
+				<div>
+					<p>@fbPost.Message</p>
+					<small>@fbPost.UpdatedTime</small>
+				</div>
+			</a>
+		</article>
+	}
+</section>
+
+
+<h3>Instagram</h3>
+<section class="feed">
+	@foreach (var igPost in feeds.InstagramPosts)
+	{
+		<article class="post">
+			<a href="@igPost.Permalink" rel="nofollow" target="_blank">
+				@if (!igPost.MediaUrl.IsNullOrWhiteSpace())
+				{
+					<img src="@igPost.MediaUrl" />
+				}
+				<div>
+					<p>@igPost.Caption</p>
+					<small>@igPost.Timestamp</small>
+				</div>
+			</a>
+		</article>
+	}
+</section>
+
+
+<h3>Twitter</h3>
+<section class="feed">
+	@foreach (var twPost in feeds.TwitterPosts)
+	{
+		<article class="post">
+			<a href="@twPost.PostLink" rel="nofollow" target="_blank">
+				@if (twPost.Attachments.First() != null)
+				{
+					<img src="@twPost.Attachments.First().Url" />
+				}
+				<div>
+					<p>@twPost.Text</p>
+					<small>@twPost.CreatedAt</small>
+				</div>
+			</a>
+		</article>
+	}
+</section>

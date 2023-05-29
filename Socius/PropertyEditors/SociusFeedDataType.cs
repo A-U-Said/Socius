@@ -30,7 +30,7 @@ namespace Socius.PropertyEditors
 
 		public void Initialize()
 		{
-			new SociusFeedDataType(_dataTypeService, _configurationEditorJsonSerializer, _propertyEditorCollection).Install();
+			new SociusFeedDataType(_dataTypeService, _configurationEditorJsonSerializer, _propertyEditorCollection).Create();
 		}
 
 		public void Terminate()
@@ -55,7 +55,7 @@ namespace Socius.PropertyEditors
 			_propertyEditorCollection = propertyEditorCollection;
 		}
 
-		public void Install()
+		public void Create()
 		{
 			if (_dataTypeService.GetDataType(SociusConstants.Application.FeedDataTypeName) is not null)
 			{

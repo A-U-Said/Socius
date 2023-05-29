@@ -3,7 +3,6 @@ using Socius.Dto.Commands;
 using Socius.Dto.Views.Profiles;
 using Socius.Helpers;
 using Socius.Repositories;
-using Socius.Socius.Dto.Commands;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 

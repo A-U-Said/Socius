@@ -45,6 +45,8 @@ namespace Socius
 			public const string ProfileUrl = $"{TreeUrl}/profile";
 
 			public const string InteractionUrl = $"{TreeUrl}/userInteraction";
+
+			public const string InstagramCallbackUrl = "umbraco/socius/instagramcallback";
 		}
 
 		public static class Media
