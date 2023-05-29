@@ -41,14 +41,21 @@
 	@foreach (var fbPost in feeds.FacebookPosts)
 	{
 		<article class="post">
-			<a href="@fbPost.PermalinkUrl" rel="nofollow" target="_blank">
-				@if (!fbPost.FullPicture.IsNullOrWhiteSpace())
+			<a href="@fbPost.PostLink" rel="nofollow" target="_blank">
+				@if (!fbPost.Attachment.MediaUrl.IsNullOrWhiteSpace())
 				{
-					<img src="@fbPost.FullPicture" />
+					if (fbPost.Attachment.MediaType == "photo")
+					{
+						<img src="@fbPost.Attachment.MediaUrl" />
+					}
+					else if (fbPost.Attachment.MediaType == "video")
+					{
+						<video src="@fbPost.Attachment.MediaUrl" />
+					}
 				}
 				<div>
 					<p>@fbPost.Message</p>
-					<small>@fbPost.UpdatedTime</small>
+					<small>@fbPost.CreatedAt</small>
 				</div>
 			</a>
 		</article>
@@ -61,14 +68,21 @@
 	@foreach (var igPost in feeds.InstagramPosts)
 	{
 		<article class="post">
-			<a href="@igPost.Permalink" rel="nofollow" target="_blank">
-				@if (!igPost.MediaUrl.IsNullOrWhiteSpace())
+			<a href="@igPost.PostLink" rel="nofollow" target="_blank">
+				@if (!igPost.Attachment.MediaUrl.IsNullOrWhiteSpace())
 				{
-					<img src="@igPost.MediaUrl" />
+					if (igPost.Attachment.MediaType == "photo")
+					{
+						<img src="@igPost.Attachment.MediaUrl" />
+					}
+					else if (igPost.Attachment.MediaType == "video")
+					{
+						<video src="@igPost.Attachment.MediaUrl" />
+					}
 				}
 				<div>
-					<p>@igPost.Caption</p>
-					<small>@igPost.Timestamp</small>
+					<p>@igPost.Message</p>
+					<small>@igPost.CreatedAt</small>
 				</div>
 			</a>
 		</article>
@@ -80,14 +94,23 @@
 <section class="feed">
 	@foreach (var twPost in feeds.TwitterPosts)
 	{
+		var mediaAttachment = twPost.Attachments.First();
+
 		<article class="post">
 			<a href="@twPost.PostLink" rel="nofollow" target="_blank">
-				@if (twPost.Attachments.First() != null)
+				@if (mediaAttachment != null)
 				{
-					<img src="@twPost.Attachments.First().Url" />
+					if (mediaAttachment.MediaType == "photo")
+					{
+						<img src="@mediaAttachment.MediaUrl" />
+					}
+					else if (mediaAttachment.MediaType == "video")
+					{
+						<video src="@mediaAttachment.MediaUrl" />
+					}
 				}
 				<div>
-					<p>@twPost.Text</p>
+					<p>@twPost.Message</p>
 					<small>@twPost.CreatedAt</small>
 				</div>
 			</a>

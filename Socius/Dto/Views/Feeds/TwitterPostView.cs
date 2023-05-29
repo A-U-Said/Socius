@@ -6,14 +6,14 @@ namespace Socius.Dto.Views.Feeds
 	{
 		public TwitterPostView(TwitterPost post, Includes includes)
 		{
-			var attachments = new List<AttachmentsView>();
+			var attachments = new List<TwitterAttachmentsView>();
 			foreach (var attachmentId in post.Attachments.MediaKeys)
 			{
-				attachments.Add(new AttachmentsView(attachmentId, includes.Media));
+				attachments.Add(new TwitterAttachmentsView(attachmentId, includes.Media));
 			}
 
 			Id = post.Id;
-			Text = post.Text;
+			Message = post.Text;
 			PostLink = $"https://twitter.com/{includes.Users.First().Username}/status/{post.Id}";
 			Attachments = attachments;
 			CreatedAt = post.CreatedAt;
@@ -21,27 +21,25 @@ namespace Socius.Dto.Views.Feeds
 
 		public string Id { get; set; }
 		public string PostLink { get; set; }
-		public string Text { get; set; }
-		public List<AttachmentsView> Attachments { get; set; }
+		public string Message { get; set; }
+		public List<TwitterAttachmentsView> Attachments { get; set; }
 		public DateTime CreatedAt { get; set; }
 	}
 
-	public class AttachmentsView
+	public class TwitterAttachmentsView
 	{
-		public AttachmentsView(string attachmentId, List<Medium> media)
+		public TwitterAttachmentsView(string attachmentId, List<Medium> media)
 		{
 			var attachment = media.Where(x => x.MediaKey == attachmentId).FirstOrDefault();
 			if (attachment == null)
 			{
 				return;
 			}
-			MediaKey = attachment.MediaKey;
-			Type = attachment.Type;
-			Url = attachment.Url;
+			MediaType = attachment.Type;
+			MediaUrl = attachment.Url;
 		}
 
-		public string MediaKey { get; set; }
-		public string Type { get; set; }
-		public string Url { get; set; }
+		public string MediaType { get; set; }
+		public string MediaUrl { get; set; }
 	}
 }

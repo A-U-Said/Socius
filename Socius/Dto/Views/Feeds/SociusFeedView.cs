@@ -1,6 +1,4 @@
-﻿using Socius.Models.ApiResponses.Facebook;
-using Socius.Models.ApiResponses.Instagram;
-using Socius.Models.ApiResponses.Twitter;
+﻿using Socius.Models.ApiResponses.Instagram;
 
 namespace Socius.Dto.Views.Feeds
 {
@@ -8,13 +6,13 @@ namespace Socius.Dto.Views.Feeds
 	{
 		public SociusFeedView()
 		{
-			FacebookPosts = new List<FacebookPost>();
-			InstagramPosts = new List<InstagramPost>();
+			FacebookPosts = new List<FacebookPostView>();
+			InstagramPosts = new List<InstagramPostView>();
 			TwitterPosts = new List<TwitterPostView>();
 		}
 
-		public List<FacebookPost> FacebookPosts { get; set; }
-		public List<InstagramPost> InstagramPosts { get; set; }
+		public List<FacebookPostView> FacebookPosts { get; set; }
+		public List<InstagramPostView> InstagramPosts { get; set; }
 		public List<TwitterPostView> TwitterPosts { get; set; }
 	}
 }

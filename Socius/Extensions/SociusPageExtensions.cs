@@ -4,6 +4,7 @@ using Socius.Models.ApiResponses.Facebook;
 using Socius.Models.ApiResponses.Instagram;
 using Socius.Models.ApiResponses.Twitter;
 using Socius.Repositories;
+using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -44,7 +45,7 @@ namespace Socius.Extensions
 					Stream fbResponseStream = fbResponse.Content.ReadAsStream();
 					StreamReader fbResponseReader = new StreamReader(fbResponseStream);
 					var fbResponseObj = JsonConvert.DeserializeObject<FacebookFeedResponse>(fbResponseReader.ReadToEnd());
-					sociusFeed.FacebookPosts = fbResponseObj?.Posts?.Data;
+					sociusFeed.FacebookPosts = fbResponseObj?.Posts?.Data.Select(x => new FacebookPostView(x)).ToList();
 				}
 			}
 
@@ -57,7 +58,7 @@ namespace Socius.Extensions
 					Stream igResponseStream = igResponse.Content.ReadAsStream();
 					StreamReader igResponseReader = new StreamReader(igResponseStream);
 					var igResponseObj = JsonConvert.DeserializeObject<InstagramFeedResponse>(igResponseReader.ReadToEnd());
-					sociusFeed.InstagramPosts = igResponseObj?.Media?.Posts;
+					sociusFeed.InstagramPosts = igResponseObj?.Media?.Posts.Select(x => new InstagramPostView(x)).ToList();
 				}
 			}
 
