@@ -4,6 +4,7 @@ using Socius.Helpers;
 using Socius.Models.ApiResponses.Instagram;
 using Socius.Repositories;
 using StackExchange.Profiling.Internal;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Routing;
@@ -42,14 +43,19 @@ namespace Socius.Controllers
 		public async Task<IActionResult> Index()
 		{
 			Request.Query.TryGetValue("code", out var code);
-			Request.Query.TryGetValue("state", out var scpId);
+			Request.Query.TryGetValue("state", out var stateParams);
 
-			if (code.Count() == 0 || !int.TryParse(scpId, out var profileId))
+			if (code.Count() == 0 || stateParams.Count() ==0)
 			{
 				return Content("Invalid callback details");
 			}
 
+			var state = stateParams.First()?.Split(',');
 			var authCode = code.First();
+			if (authCode == null || state == null || state.Count() == 0 || !int.TryParse(state[0], out var profileId) || !Guid.TryParse(state[1], out var validationKey))
+			{
+				return Content("Invalid callback details");
+			}
 
 			var tokenResponse = await _instagramHelper.GetToken(profileId, authCode);
 			if (tokenResponse == null)
@@ -61,6 +67,11 @@ namespace Socius.Controllers
 			if (igProfile == null)
 			{
 				return Content("Could not find Socius profile with this Id");
+			}
+
+			if (validationKey != igProfile.IgValidationKey)
+			{
+				return Content("Invalid callback details");
 			}
 
 			igProfile.IgToken = tokenResponse.AccessToken;

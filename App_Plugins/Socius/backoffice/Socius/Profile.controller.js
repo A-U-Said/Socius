@@ -199,6 +199,7 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 		return SociusProfilesResource.ClearIgToken(vm.profile.id)
 		.then(data => {
 			vm.profile.feeds.instagram.token = null;
+			vm.profile.feeds.instagram.tokenExpiry = null;
 			return data;
 		})
 		.catch(error => {
@@ -245,11 +246,18 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 
 	vm.newIgLogin = () => {
 		var { clientId, redirectUri } = vm.profile.feeds.instagram;
-		var instaLogin = window.open(
-			`https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code&state=${profileId}`,
-			"_blank", 
-			"popup, width=375, height=505, toolbar=no, location=no, status=no, menubar=no"
-		);
+
+		SociusProfilesResource.CreateIgValidationKey(vm.profile.id)
+		.then(validationKey => {
+			var instaLogin = window.open(
+				`https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code&state=${profileId},${validationKey}`,
+				"_blank", 
+				"popup, width=375, height=505, toolbar=no, location=no, status=no, menubar=no"
+			);
+		})
+		.catch(error => {
+			return null;
+		});
 	}
 
 	vm.init();

@@ -67,9 +67,25 @@ namespace Socius.Controllers
 			}
 
 			igCredentials.IgToken = null;
+			igCredentials.IgTokenExpiry = null;
 			await _repository.Update(igCredentials);
 			
 			return Ok();
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> CreateIgValidationKey(int profileId)
+		{
+			var igCredentials = await _repository.GetSingle(profileId);
+			if (igCredentials == null)
+			{
+				return NotFound("No instagram record for this Socius profile found");
+			}
+
+			igCredentials.IgValidationKey = Guid.NewGuid();
+			await _repository.Update(igCredentials);
+
+			return Ok(igCredentials.IgValidationKey);
 		}
 	}
 

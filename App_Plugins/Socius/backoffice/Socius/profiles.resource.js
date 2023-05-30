@@ -57,6 +57,13 @@ angular.module('umbraco.resources').factory('SociusProfilesResource', function($
       );
     },
 
+    CreateIgValidationKey: (profileId) => {
+      return umbRequestHelper.resourcePromise(
+        $http.get(`${instagramBaseUrl}/CreateIgValidationKey?profileId=${profileId}`),
+        'Failed to create Instagram validation key'
+      );
+    },
+
     ClearFbToken: (profileId) => {
       return umbRequestHelper.resourcePromise(
         $http.delete(`${facebookBaseUrl}/ClearFbToken?profileId=${profileId}`),

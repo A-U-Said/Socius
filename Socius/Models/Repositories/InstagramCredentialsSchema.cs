@@ -50,6 +50,10 @@ namespace Socius.Models.Repositories
 		[NullSetting(NullSetting = NullSettings.Null)]
 		public DateTime? IgTokenExpiry { get; set; }
 
+		[Column("IgValidationKey")]
+		[NullSetting(NullSetting = NullSettings.Null)]
+		public Guid? IgValidationKey { get; set; }
+
 		public override void Update(UpdateInstagramCredentialsCommand newDetails)
 		{
 			//if the user wipes all input fields then nullify the record fields but do not delete the record
