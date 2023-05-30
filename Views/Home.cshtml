@@ -1,4 +1,5 @@
-﻿@using Socius.Extensions;
+﻿@using Socius.Dto.Views.Feeds;
+@using Socius.Extensions;
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
@@ -7,113 +8,170 @@
 	var feeds = Model.GetSocialMedia(Model.Socius);
 }
 
-<style>
-	.feed {
-		display: flex;
-		flex-flow: row wrap;
-	}
-	.post {
-		box-sizing: border-box;
-		margin: 8px 8px;
-		background-color: #56a5cf;
-		width: 400px;
-		padding: 4px;
-	}
-	.post > a {
-		display: flex;
-		flex-flow: row nowrap;
-		color: inherit;
-		text-decoration: none;
-	}
-	.post > a > img {
-		max-width: 150px;
-		margin-right: 8px;
-	}
+<!DOCTYPE html>
+<html>
 
-</style>
+<head>
+	<title>Socius</title>
+	<style>
+		.feed {
+			display: flex;
+			flex-flow: row wrap;
+		}
+		.post {
+			box-sizing: border-box;
+			margin: 8px 8px;
+			background-color: #56a5cf;
+			width: 400px;
+			padding: 4px;
+		}
+		.post > a {
+			display: flex;
+			flex-flow: row nowrap;
+			color: inherit;
+			text-decoration: none;
+		}
+		.post > a > img {
+			max-width: 150px;
+			margin-right: 8px;
+		}
+
+	</style>
+</head>
 
 
-<h1>Socius Feeds</h1>
+<body>
 
+	@functions {
+		IHtmlContent CreatePost(SocialMediaPostView postView)
+		{
+			IHtmlContent media = Html.Raw($@"");
 
-<h3>Facebook</h3>
-<section class="feed">
-	@foreach (var fbPost in feeds.FacebookPosts)
-	{
-		<article class="post">
-			<a href="@fbPost.PostLink" rel="nofollow" target="_blank">
-				@if (!fbPost.Attachment.MediaUrl.IsNullOrWhiteSpace())
+			if (!postView.Attachment.MediaUrl.IsNullOrWhiteSpace())
+			{
+				if (postView.Attachment.MediaType == "photo")
 				{
-					if (fbPost.Attachment.MediaType == "photo")
-					{
-						<img src="@fbPost.Attachment.MediaUrl" />
-					}
-					else if (fbPost.Attachment.MediaType == "video")
-					{
-						<video src="@fbPost.Attachment.MediaUrl" />
-					}
+					media = Html.Raw($@"<img src='{postView.Attachment.MediaUrl}' />");
 				}
-				<div>
-					<p>@fbPost.Message</p>
-					<small>@fbPost.CreatedAt</small>
-				</div>
-			</a>
-		</article>
-	}
-</section>
-
-
-<h3>Instagram</h3>
-<section class="feed">
-	@foreach (var igPost in feeds.InstagramPosts)
-	{
-		<article class="post">
-			<a href="@igPost.PostLink" rel="nofollow" target="_blank">
-				@if (!igPost.Attachment.MediaUrl.IsNullOrWhiteSpace())
+				else if (postView.Attachment.MediaType == "video")
 				{
-					if (igPost.Attachment.MediaType == "photo")
-					{
-						<img src="@igPost.Attachment.MediaUrl" />
-					}
-					else if (igPost.Attachment.MediaType == "video")
-					{
-						<video src="@igPost.Attachment.MediaUrl" />
-					}
+					media = Html.Raw($@"<video src='{postView.Attachment.MediaUrl}' />");
 				}
-				<div>
-					<p>@igPost.Message</p>
-					<small>@igPost.CreatedAt</small>
-				</div>
-			</a>
-		</article>
+			}
+
+			return Html.Raw($@"
+				<article class='post'>
+					<a href='{postView.PostLink}' rel='nofollow' target='_blank'>
+						{media}
+						<div>
+							<p>{postView.Message}</p>
+							<small>{@postView.CreatedAt}</small>
+						</div>
+					</a>
+				</article>
+			");
+		}
 	}
-</section>
+
+	<h1>Socius Feeds</h1>
 
 
-<h3>Twitter</h3>
-<section class="feed">
-	@foreach (var twPost in feeds.TwitterPosts)
-	{
-		var mediaAttachment = twPost.Attachments.First();
+	<h3>Facebook</h3>
+	<section class="feed">
+		@foreach (var fbPost in feeds.FacebookPosts)
+		{
+			@CreatePost(fbPost)
+		}
+	</section>
 
-		<article class="post">
-			<a href="@twPost.PostLink" rel="nofollow" target="_blank">
-				@if (mediaAttachment != null)
-				{
-					if (mediaAttachment.MediaType == "photo")
-					{
-						<img src="@mediaAttachment.MediaUrl" />
-					}
-					else if (mediaAttachment.MediaType == "video")
-					{
-						<video src="@mediaAttachment.MediaUrl" />
-					}
+	<h3>Instagram</h3>
+	<section class="feed">
+		@foreach (var igPost in feeds.InstagramPosts)
+		{
+			@CreatePost(igPost)
+		}
+	</section>
+
+	<h3>Twitter</h3>
+	<section class="feed">
+		@foreach (var twPost in feeds.TwitterPosts)
+		{
+			@CreatePost(twPost)
+		}
+	</section>
+
+	<h1>Socius Feeds Async</h1>
+
+	<button onclick="getFeedJson()">Get Socius Feeds</button>
+
+	<h3>Facebook</h3>
+	<section id="fb" class="feed"></section>
+
+	<h3>Instagram</h3>
+	<section id="ig" class="feed"></section>
+
+	<h3>Twitter</h3>
+	<section id="tw" class="feed"></section>
+
+	<script>
+		function createPost(section, smPost) {
+			const post = document.createElement("article");
+			post.classList.add("post");
+
+			const postLink = document.createElement("a");
+			postLink.href = smPost.postLink;
+			postLink.rel = "nofollow";
+			postLink.target = "_blank";
+
+			if (smPost.attachment.mediaUrl) {
+				if (smPost.attachment.mediaType == "photo") {
+					const postMedia = document.createElement("img");
+					postMedia.src = smPost.attachment.mediaUrl;
+					postLink.appendChild(postMedia);
 				}
-				<div>
-					<p>@twPost.Message</p>
-					<small>@twPost.CreatedAt</small>
-				</div>
-			</a>
-		</article>
-	}
-</section>
+				else if (smPost.attachment.mediaType == "video") {
+					const postMedia = document.createElement("video");
+					postMedia.src = smPost.attachment.mediaUrl;
+					postLink.appendChild(postMedia);
+				}
+			}
+
+			const postText = document.createElement("div");
+
+			const postMessage = document.createElement("p");
+			postMessage.innerText = smPost.message;
+			postText.appendChild(postMessage);
+
+			const postDate = document.createElement("small");
+			postDate.innerText = smPost.createdAt;
+			postText.appendChild(postDate);
+
+			postLink.appendChild(postText);
+			post.appendChild(postLink);
+			section.appendChild(post);
+		}
+
+		async function getFeedJson() {
+			const response = await fetch(`/umbraco/socius/SociusFeedAsync/GetSocialMediaPostRender?profile=${@Model.Socius}`);
+			const feeds = await response.json();
+
+			const fbSection = document.getElementById("fb");
+			feeds.facebookPosts.forEach(fbPost => {
+				createPost(fbSection, fbPost);
+			});
+
+			const igSection = document.getElementById("ig");
+			feeds.instagramPosts.forEach(igPost => {
+				createPost(igSection, igPost);
+			});
+
+			const twSection = document.getElementById("tw");
+			feeds.twitterPosts.forEach(twPost => {
+				createPost(twSection, twPost);
+			});
+		}
+	</script>
+
+</body>
+
+</html>

@@ -206,6 +206,10 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 		});
 	}
 
+	vm.refreshIgToken = () => {
+
+	}
+
 	vm.clearFbToken = () => {
 		return SociusProfilesResource.ClearFbToken(vm.profile.id)
 		.then(data => {

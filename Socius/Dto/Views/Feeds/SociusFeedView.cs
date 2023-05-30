@@ -6,13 +6,13 @@ namespace Socius.Dto.Views.Feeds
 	{
 		public SociusFeedView()
 		{
-			FacebookPosts = new List<FacebookPostView>();
-			InstagramPosts = new List<InstagramPostView>();
-			TwitterPosts = new List<TwitterPostView>();
+			FacebookPosts = new List<SocialMediaPostView>();
+			InstagramPosts = new List<SocialMediaPostView>();
+			TwitterPosts = new List<SocialMediaPostView>();
 		}
 
-		public List<FacebookPostView> FacebookPosts { get; set; }
-		public List<InstagramPostView> InstagramPosts { get; set; }
-		public List<TwitterPostView> TwitterPosts { get; set; }
+		public List<SocialMediaPostView> FacebookPosts { get; set; }
+		public List<SocialMediaPostView> InstagramPosts { get; set; }
+		public List<SocialMediaPostView> TwitterPosts { get; set; }
 	}
 }

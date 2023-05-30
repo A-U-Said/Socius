@@ -98,6 +98,12 @@
 												id="igClientSecret"
 												ng-required="false" />
 										</umb-control-group>
+										<div ng-if="vm.profile.feeds.instagram.tokenExpiry != null">
+											<p>
+												<strong>Expires: </strong>
+												{{vm.profile.feeds.instagram.tokenExpiry  | date:'dd/MM/yyyy hh:mm'}}
+											</p>
+										</div>
 										<button ng-if="vm.profile.feeds.instagram.token == null && vm.profile.feeds.instagram.clientId != clientId && vm.profile.feeds.instagram.redirectUri != null" type="button" class="btn btn-success" ng-click="vm.newIgLogin()">New Instagram login</button>
             				<button ng-if="vm.profile.feeds.instagram.token != null" type="button" class="btn btn-danger" ng-click="vm.clearIgToken()">Clear Instagram Token</button>
 										<button ng-if="vm.profile.feeds.instagram.token != null" type="button" class="btn" ng-click="vm.refreshIgToken()">Refresh Instagram Token</button>
@@ -184,7 +190,7 @@
                 	</div>
 									<div class="sc-profile-metadata-item">
                     <strong>Updated Date</strong>
-                    <p>{{ vm.profile.updateDate }}</p>
+                    <p>{{ vm.profile.updateDate | date:'dd/MM/yyyy hh:mm' }}</p>
                 	</div>
 									<div class="sc-profile-metadata-item">
                     <strong>Created By</strong>
@@ -192,7 +198,7 @@
                 	</div>
 									<div class="sc-profile-metadata-item">
                     <strong>Created Date</strong>
-                    <p>{{ vm.profile.createDate }}</p>
+                    <p>{{ vm.profile.createDate | date:'dd/MM/yyyy hh:mm' }}</p>
                 	</div>
 								</umb-box-content>
 							</umb-box>

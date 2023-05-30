@@ -16,6 +16,7 @@ namespace Socius.DI
 			builder.Services.AddSingleton<ISociusProfilesHelper, SociusProfilesHelper>();
 			builder.Services.AddSingleton<IInstagramHelper, InstagramHelper>();
 			builder.Services.AddSingleton<IFacebookHelper, FacebookHelper>();
+			builder.Services.AddSingleton<ISociusFeedHelper, SociusFeedHelper>();
 		}
 	}
 }

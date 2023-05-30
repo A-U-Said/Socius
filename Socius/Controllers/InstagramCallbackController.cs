@@ -44,12 +44,12 @@ namespace Socius.Controllers
 			Request.Query.TryGetValue("code", out var code);
 			Request.Query.TryGetValue("state", out var scpId);
 
-			var authCode = code.First();
-
-			if (authCode == null || !int.TryParse(scpId, out var profileId))
+			if (code.Count() == 0 || !int.TryParse(scpId, out var profileId))
 			{
 				return Content("Invalid callback details");
 			}
+
+			var authCode = code.First();
 
 			var tokenResponse = await _instagramHelper.GetToken(profileId, authCode);
 			if (tokenResponse == null)

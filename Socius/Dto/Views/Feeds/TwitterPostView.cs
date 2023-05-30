@@ -15,14 +15,14 @@ namespace Socius.Dto.Views.Feeds
 			Id = post.Id;
 			Message = post.Text;
 			PostLink = $"https://twitter.com/{includes.Users.First().Username}/status/{post.Id}";
-			Attachments = attachments;
+			Attachment = attachments.FirstOrDefault();
 			CreatedAt = post.CreatedAt;
 		}
 
 		public string Id { get; set; }
 		public string PostLink { get; set; }
 		public string Message { get; set; }
-		public List<TwitterAttachmentsView> Attachments { get; set; }
+		public TwitterAttachmentsView Attachment { get; set; }
 		public DateTime CreatedAt { get; set; }
 	}
 
