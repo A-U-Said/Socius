@@ -40,7 +40,7 @@ namespace Socius.Controllers
 
 
 		[HttpGet]
-		public async Task<IActionResult> RefreshInstagramToken(int profileId)
+		public async Task<IActionResult> RefreshIgToken(int profileId)
 		{
 			var igCredentials = await _repository.GetSingle(profileId);
 			if (igCredentials == null || string.IsNullOrEmpty(igCredentials.IgToken))
@@ -49,12 +49,12 @@ namespace Socius.Controllers
 			}
 
 			var refreshResult = await _instagramHelper.RefreshInstagramToken(profileId);
-			if (refreshResult == TaskStatus.Faulted)
+			if (refreshResult == null)
 			{
 				return BadRequest("Failed to refresh token with Instagram API");
 			}
 
-			return Ok();
+			return Ok(refreshResult);
 		}
 
 		[HttpDelete]

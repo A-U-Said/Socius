@@ -94,12 +94,12 @@ namespace Socius.Helpers
 			}
 		}
 
-		public async Task<TaskStatus> RefreshInstagramToken(int sociusProfileId)
+		public async Task<DateTime?> RefreshInstagramToken(int sociusProfileId)
 		{
 			var storedCredentials = await _repository.GetSingle(sociusProfileId).ThrowIfNull("Socius profile cannot be found");
 			if (storedCredentials!.IgToken == null)
 			{
-				return TaskStatus.Faulted;
+				return null;
 			}
 			var igRefreshClientHandler = new HttpClientHandler()
 			{ 
@@ -116,21 +116,21 @@ namespace Socius.Helpers
 				var refreshInstaResponse = JsonConvert.DeserializeObject<InstagramRefreshResponse>(IgTokenResponseReader.ReadToEnd());
 				if (refreshInstaResponse == null)
 				{
-					return TaskStatus.Faulted;
+					return null;
 				}
 
 				storedCredentials.IgToken = refreshInstaResponse.AccessToken;
-				storedCredentials.IgTokenExpiry = refreshInstaResponse.ExpiryDate;
+				storedCredentials.IgTokenExpiry = DateTime.Now.AddSeconds(refreshInstaResponse.ExpiresIn);
 
 				await _repository.Update(storedCredentials);
 
-				return TaskStatus.RanToCompletion;
+				return storedCredentials.IgTokenExpiry;
 			}
 			else
 			{
 				var ex = await IgTokenResponse.Content.ReadAsStringAsync();
 				_logger.LogError("Error occurred refreshing Instagram token: {ex}", ex);
-				return TaskStatus.Faulted;
+				return null;
 			}
 		}
 	}

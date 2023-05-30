@@ -7,6 +7,6 @@ namespace Socius.Helpers
 	{
 		bool IsCompleteProfile(InstagramCredentialsSchema storedCredentials);
 		Task<InstagramLongTokenResponse?> GetToken(int sociusProfileId, string igAuthCode);
-		Task<TaskStatus> RefreshInstagramToken(int sociusProfileId);
+		Task<DateTime?> RefreshInstagramToken(int sociusProfileId);
 	}
 }

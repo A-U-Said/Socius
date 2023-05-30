@@ -207,7 +207,14 @@ angular.module("umbraco").controller("Socius.ProfileController", function ($scop
 	}
 
 	vm.refreshIgToken = () => {
-
+		return SociusProfilesResource.RefreshIgToken(vm.profile.id)
+		.then(data => {
+			vm.profile.feeds.instagram.tokenExpiry = data;
+			return data;
+		})
+		.catch(error => {
+			return null;
+		});
 	}
 
 	vm.clearFbToken = () => {

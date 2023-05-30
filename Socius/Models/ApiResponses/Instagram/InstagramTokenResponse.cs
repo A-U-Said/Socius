@@ -33,7 +33,5 @@ namespace Socius.Models.ApiResponses.Instagram
 
         [JsonProperty("Expires_in")]
         public int ExpiresIn { get; set; }
-
-        public DateTime ExpiryDate => DateTimeOffset.FromUnixTimeSeconds(ExpiresIn).DateTime;
     }
 }

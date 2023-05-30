@@ -50,6 +50,13 @@ angular.module('umbraco.resources').factory('SociusProfilesResource', function($
       );
     },
 
+    RefreshIgToken: (profileId) => {
+      return umbRequestHelper.resourcePromise(
+        $http.get(`${instagramBaseUrl}/RefreshIgToken?profileId=${profileId}`),
+        'Failed to refresh Instagram token'
+      );
+    },
+
     ClearFbToken: (profileId) => {
       return umbRequestHelper.resourcePromise(
         $http.delete(`${facebookBaseUrl}/ClearFbToken?profileId=${profileId}`),
