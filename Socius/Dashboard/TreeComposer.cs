@@ -97,6 +97,15 @@ namespace Socius.Dashboard
 					"icon-hand-pointer",
 					false,
 					SociusConstants.Urls.InteractionUrl),
+
+				CreateTreeNode(
+					SociusConstants.Application.HelpDashboardAlias,
+					parentId,
+					qs,
+					SociusConstants.Application.HelpDashboardName,
+					"icon-help-alt",
+					false,
+					SociusConstants.Urls.HelpUrl),
 			};
 		}
 	}

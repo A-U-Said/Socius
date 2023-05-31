@@ -1,4 +1,4 @@
-angular.module("umbraco").controller("Socius.ProfilesController", function ($scope, $location, appState, navigationService, listViewHelper, usersResource, $routeParams) {
+angular.module("umbraco").controller("Socius.ProfilesController", function ($scope) {
 	
 	var vm = this;
 	var sociusViewFolder = `${Umbraco.Sys.ServerVariables.umbracoSettings.appPluginsPath}/socius/backoffice/socius`;
@@ -16,10 +16,10 @@ angular.module("umbraco").controller("Socius.ProfilesController", function ($sco
 			"active": true,
 		},
 		{
-			"name": "Help",
-			"alias": "profilesHelp",
-			"icon": "icon-info",
-			"view": `${sociusViewFolder}/profilesHelp.html`,
+			"name": "Import/Export",
+			"alias": "profilesImportExport",
+			"icon": "icon-cloud-upload",
+			"view": `${sociusViewFolder}/profilesImportExport.html`,
 			"active": false,
 		}
 	];

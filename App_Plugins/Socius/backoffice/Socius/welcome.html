@@ -30,7 +30,7 @@
           <li ng-repeat="change in vm.changelog">
             <span class="sc-changelog-line">•</span>
             <div class="sc-changelog-log">
-              <h5>{{change.title}} - {{change.date}}</h5>
+              <h5>{{change.title}} - {{ change.date | date:'dd/MM/yyyy' }}</h5>
               <ul>
                 <li ng-repeat="note in change.changes">{{note}}</li>
               </ul>

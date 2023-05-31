@@ -27,6 +27,9 @@ namespace Socius
 			public const string InteractionDashboardName = "User Interaction";
 			public const string InteractionDashboardAlias = "userInteraction";
 
+			public const string HelpDashboardName = "Help";
+			public const string HelpDashboardAlias = "help";
+
 			public const string FeedPropertyEditorName = "Socius Feed";
 			public const string FeedPropertyEditorAlias = "Socius.Feed";
 
@@ -45,6 +48,8 @@ namespace Socius
 			public const string ProfileUrl = $"{TreeUrl}/profile";
 
 			public const string InteractionUrl = $"{TreeUrl}/userInteraction";
+
+			public const string HelpUrl = $"{TreeUrl}/help";
 
 			public const string InstagramCallbackUrl = "umbraco/socius/instagramcallback";
 		}

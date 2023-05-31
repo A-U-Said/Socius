@@ -1,4 +1,4 @@
-angular.module("umbraco").controller("Socius.WelcomeController", function ($scope, $location, appState) {
+angular.module("umbraco").controller("Socius.WelcomeController", function ($scope, $location, appState, SociusChangelogResource) {
 	
 	var vm = this;
 	var currentSection = appState.getSectionState("currentSection");
@@ -24,34 +24,28 @@ angular.module("umbraco").controller("Socius.WelcomeController", function ($scop
 			url: "socius/userInteraction"
 		},
 		{
-			name: "Idk",
-			description: "No idea. I just like having 3",
-			icon: "icon-share-alt-2",
-			url: "socius/welcome"
+			name: "Help",
+			description: "FAQ and Help",
+			icon: "icon-help-alt",
+			url: "socius/help"
 		},
 	];
 
-	vm.changelog = [
-		{
-			title: "0.2",
-			date: "02/05/2023",
-			changes: [
-				"Donec et interdum sem. Fusce eleifend gravida nisi, sit amet tempor ligula feugiat et.",
-				"Phasellus tincidunt vestibulum elit, eu gravida tellus congue id."
-			]
-		},
-		{
-			title: "0.1",
-			date: "01/05/2023",
-			changes: [
-				"Morbi gravida pharetra nulla nec rhoncus.",
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-			]
-		},
-	];
+	vm.changelog = [];
 
 	vm.goToDashboard = (dashboardUrl) => {
 		$location.path(`/${currentSection}/${dashboardUrl}`);
 	}
+
+	vm.init = () => {
+		SociusChangelogResource.GetChanges()
+		.then(data => {
+			vm.changelog = data;
+		})
+		.catch(error => {
+		});
+	}
+
+	vm.init();
 	
 });

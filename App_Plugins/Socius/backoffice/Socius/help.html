@@ -1,0 +1,33 @@
+<div ng-controller="Socius.HelpController as vm" class="clearfix">
+
+  <umb-editor-view footer="false">
+
+		<umb-editor-header
+			name="vm.page.name"
+			name-locked="true"
+			hide-icon="true"
+			hide-description="true"
+			hide-alias="true">
+		</umb-editor-header>
+
+		<umb-editor-container>
+
+      <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
+
+      <div class="sc-qna-article" ng-repeat="article in vm.faq">
+    
+        <div class="sc-qna-question">
+            <h4>{{article.question}}</h4>
+        </div>
+    
+        <div class="sc-qna-answer">
+          <p>{{article.answer}}</p>
+        </div>
+    
+      </div>
+
+		</umb-editor-container>
+
+	</umb-editor-view>
+
+</div>
