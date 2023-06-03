@@ -31,7 +31,7 @@ namespace Socius.Dto.Views.Feeds
 			Id = post.Id;
 			Message = post.Text;
 			PostLink = $"https://twitter.com/{includes.Users.First().Username}/status/{post.Id}";
-			Attachment = new AttachmentsView(post.Attachments.MediaKeys.FirstOrDefault(), includes.Media);
+			Attachment = new AttachmentsView(post.Attachments?.MediaKeys?.FirstOrDefault(), includes.Media);
 			CreatedAt = post.CreatedAt;
 		}
 
@@ -47,6 +47,10 @@ namespace Socius.Dto.Views.Feeds
 	{
 		public AttachmentsView(string mediaUrl, List<Medium>? media = null)
 		{
+			if (mediaUrl == null)
+			{
+				return;
+			}
 			if (media == null)
 			{
 				MediaType = AttachmentHelper.GetAttachmentType(mediaUrl);

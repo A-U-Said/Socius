@@ -1,11 +1,11 @@
 ﻿@using Socius.Dto.Views.Feeds;
 @using Socius.Extensions;
+@using Socius.Helpers;
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @{
 	Layout = null;
-	var feeds = Model.GetSocialMedia(Model.Socius);
 }
 
 <!DOCTYPE html>
@@ -42,135 +42,18 @@
 
 <body>
 
-	@functions {
-		IHtmlContent CreatePost(SocialMediaPostView postView)
-		{
-			IHtmlContent media = Html.Raw($@"");
-
-			if (!postView.Attachment.MediaUrl.IsNullOrWhiteSpace())
-			{
-				if (postView.Attachment.MediaType == "photo")
-				{
-					media = Html.Raw($@"<img src='{postView.Attachment.MediaUrl}' />");
-				}
-				else if (postView.Attachment.MediaType == "video")
-				{
-					media = Html.Raw($@"<video src='{postView.Attachment.MediaUrl}' />");
-				}
-			}
-
-			return Html.Raw($@"
-				<article class='post'>
-					<a href='{postView.PostLink}' rel='nofollow' target='_blank'>
-						{media}
-						<div>
-							<p>{postView.Message}</p>
-							<small>{@postView.CreatedAt}</small>
-						</div>
-					</a>
-				</article>
-			");
-		}
-	}
-
 	<h1>Socius Feeds</h1>
+	@Model.RenderFeeds(Model.Socius);
+	@*var feeds = Model.GetFeeds(Model.Socius); returns c# object for custom implementation*@
 
-
-	<h3>Facebook</h3>
-	<section class="feed">
-		@foreach (var fbPost in feeds.FacebookPosts)
-		{
-			@CreatePost(fbPost)
-		}
-	</section>
-
-	<h3>Instagram</h3>
-	<section class="feed">
-		@foreach (var igPost in feeds.InstagramPosts)
-		{
-			@CreatePost(igPost)
-		}
-	</section>
-
-	<h3>Twitter</h3>
-	<section class="feed">
-		@foreach (var twPost in feeds.TwitterPosts)
-		{
-			@CreatePost(twPost)
-		}
-	</section>
 
 	<h1>Socius Feeds Async</h1>
+	<section id="socius-async"></section>
+	<button onclick="Socius.renderFeedsAsync(@Model.Socius, 'socius-async')">Render Socius Feeds Async</button>
+	@*<script type="text/javascript">Socius.getFeedsAsync(@Model.Socius)</script> gets json object for custom async implementation*@
 
-	<button onclick="getFeedJson()">Get Socius Feeds</button>
 
-	<h3>Facebook</h3>
-	<section id="fb" class="feed"></section>
-
-	<h3>Instagram</h3>
-	<section id="ig" class="feed"></section>
-
-	<h3>Twitter</h3>
-	<section id="tw" class="feed"></section>
-
-	<script>
-		function createPost(section, smPost) {
-			const post = document.createElement("article");
-			post.classList.add("post");
-
-			const postLink = document.createElement("a");
-			postLink.href = smPost.postLink;
-			postLink.rel = "nofollow";
-			postLink.target = "_blank";
-
-			if (smPost.attachment.mediaUrl) {
-				if (smPost.attachment.mediaType == "photo") {
-					const postMedia = document.createElement("img");
-					postMedia.src = smPost.attachment.mediaUrl;
-					postLink.appendChild(postMedia);
-				}
-				else if (smPost.attachment.mediaType == "video") {
-					const postMedia = document.createElement("video");
-					postMedia.src = smPost.attachment.mediaUrl;
-					postLink.appendChild(postMedia);
-				}
-			}
-
-			const postText = document.createElement("div");
-
-			const postMessage = document.createElement("p");
-			postMessage.innerText = smPost.message;
-			postText.appendChild(postMessage);
-
-			const postDate = document.createElement("small");
-			postDate.innerText = smPost.createdAt;
-			postText.appendChild(postDate);
-
-			postLink.appendChild(postText);
-			post.appendChild(postLink);
-			section.appendChild(post);
-		}
-
-		async function getFeedJson() {
-			const response = await fetch(`/umbraco/socius/SociusFeedAsync/GetSocialMediaPostRender?profile=${@Model.Socius}`);
-			const feeds = await response.json();
-
-			const fbSection = document.getElementById("fb");
-			feeds.facebookPosts.forEach(fbPost => {
-				createPost(fbSection, fbPost);
-			});
-
-			const igSection = document.getElementById("ig");
-			feeds.instagramPosts.forEach(igPost => {
-				createPost(igSection, igPost);
-			});
-
-			const twSection = document.getElementById("tw");
-			feeds.twitterPosts.forEach(twPost => {
-				createPost(twSection, twPost);
-			});
-		}
-	</script>
+	<script type="text/javascript" src="/scripts/SociusJs.js"></script>
 
 </body>
 

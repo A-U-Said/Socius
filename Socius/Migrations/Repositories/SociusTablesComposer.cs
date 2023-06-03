@@ -54,7 +54,10 @@ namespace Socius.Migrations.Repositories
             migrationPlan.From("Socius-tw-table")
                 .To<AddInstagramCredentialsTable>("Socius-ig-table");
 
-            var upgrader = new Upgrader(migrationPlan);
+			migrationPlan.From("Socius-ig-table")
+	            .To<AddUserInteractionsTable>("Socius-userinteraction-table");
+
+			var upgrader = new Upgrader(migrationPlan);
             upgrader.Execute(_migrationPlanExecutor, _coreScopeProvider, _keyValueService);
         }
 

@@ -1,43 +1,49 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Socius.Dto.Views.Feeds;
 using Socius.Helpers;
-using Umbraco.Cms.Core.Cache;
-using Umbraco.Cms.Core.Logging;
-using Umbraco.Cms.Core.Routing;
-using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Core.Web;
-using Umbraco.Cms.Infrastructure.Persistence;
+using Socius.Socius.Dto.Commands;
 using Umbraco.Cms.Web.Common.Attributes;
-using Umbraco.Cms.Web.Website.Controllers;
+using Umbraco.Cms.Web.Common.Controllers;
 
 namespace Socius.Controllers
 {
 	[PluginController("Socius")]
-	public class SociusFeedAsyncController : SurfaceController
+	public class SociusFeedAsyncController : UmbracoApiController
 	{
 		private readonly ISociusFeedHelper _sociusFeedHelper;
+		private readonly IUserInteractionHelper _userInteractionHelper;
 		private readonly ILogger<SociusFeedAsyncController> _logger;
 
 		public SociusFeedAsyncController(
-			IUmbracoContextAccessor umbracoContextAccessor,
-			IUmbracoDatabaseFactory databaseFactory,
-			ServiceContext services,
-			AppCaches appCaches,
-			IProfilingLogger profilingLogger,
-			IPublishedUrlProvider publishedUrlProvider,
 			ISociusFeedHelper sociusFeedHelper,
+			IUserInteractionHelper userInteractionHelper,
 			ILogger<SociusFeedAsyncController> logger)
-			: base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
 		{
 			_sociusFeedHelper = sociusFeedHelper;
+			_userInteractionHelper = userInteractionHelper;
 			_logger = logger;
 		}
 
 
 		[HttpGet]
-		public SociusFeedView GetSocialMediaPostRender(int profile)
+		[Route("socius/feeds/{profile}")]
+		public IActionResult GetSocialMediaPostRender(int profile)
 		{
-			return _sociusFeedHelper.GetSociusFeeds(profile);
+			return Ok(_sociusFeedHelper.GetSociusFeeds(profile));
+		}
+
+
+		[HttpPost]
+		[Route("socius/interaction")]
+		public async Task<IActionResult> RecordClick([FromBody] RecordInteractionCommand command)
+		{
+			if (command.ProfileId == 0 || command.FeedType == 0)
+			{
+				return BadRequest("Required parameters not provided");
+			}
+
+			await _userInteractionHelper.IncrementClickCount(command.ProfileId, command.FeedType);
+
+			return Ok();
 		}
 
 	}

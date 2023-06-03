@@ -1,5 +1,6 @@
 ﻿using Socius.Helpers;
 using Socius.Repositories;
+using Socius.Socius.Helpers;
 using Umbraco.Cms.Core.Composing;
 
 namespace Socius.DI
@@ -12,11 +13,13 @@ namespace Socius.DI
 			builder.Services.AddSingleton<IFacebookCredentialsRepository, FacebookCredentialsRepository>();
 			builder.Services.AddSingleton<IInstagramCredentialsRepository, InstagramCredentialsRepository>();
 			builder.Services.AddSingleton<ITwitterCredentialsRepository, TwitterCredentialsRepository>();
+			builder.Services.AddSingleton<IUserInteractionRepository, UserInteractionRepository>();
 
 			builder.Services.AddSingleton<ISociusProfilesHelper, SociusProfilesHelper>();
 			builder.Services.AddSingleton<IInstagramHelper, InstagramHelper>();
 			builder.Services.AddSingleton<IFacebookHelper, FacebookHelper>();
 			builder.Services.AddSingleton<ISociusFeedHelper, SociusFeedHelper>();
+			builder.Services.AddSingleton<IUserInteractionHelper, UserInteractionHelper>();
 		}
 	}
 }
