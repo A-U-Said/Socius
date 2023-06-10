@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Socius.Dto.Views.Changelog;
-using Socius.Socius.Dto.Views;
-using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Web.BackOffice.Controllers;
+using Socius.Dto.Views;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 

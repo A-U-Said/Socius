@@ -1,4 +1,4 @@
-﻿namespace Socius.Socius.Dto.Views
+﻿namespace Socius.Dto.Views
 {
 	public class FaqQuestionView
 	{

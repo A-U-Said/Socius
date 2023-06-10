@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Socius.Dto.Views.Feeds;
 using Socius.Helpers;
+using Socius.Models.Shared;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Socius.Extensions
@@ -29,7 +30,8 @@ namespace Socius.Extensions
 				return new HtmlString(htmlString);
 			}
 
-			var feeds = sociusFeedHelper.GetSociusFeeds((int)profile);
+			var profileId = (int)profile;
+			var feeds = sociusFeedHelper.GetSociusFeeds(profileId);
 			if (feeds == null)
 			{
 				return new HtmlString(htmlString);
@@ -44,7 +46,7 @@ namespace Socius.Extensions
 				");
 				foreach (var fbPost in feeds.FacebookPosts)
 				{
-					htmlString += CreatePost(fbPost);
+					htmlString += CreatePost(fbPost, profileId, SocialMediaFeedType.Facebook);
 				}
 				htmlString += new HtmlString($@"
 					</div>
@@ -61,7 +63,7 @@ namespace Socius.Extensions
 				");
 				foreach (var igPost in feeds.InstagramPosts)
 				{
-					htmlString += CreatePost(igPost);
+					htmlString += CreatePost(igPost, profileId, SocialMediaFeedType.Instagram);
 				}
 				htmlString += new HtmlString($@"
 					</div>
@@ -78,7 +80,7 @@ namespace Socius.Extensions
 				");
 				foreach (var twPost in feeds.TwitterPosts)
 				{
-					htmlString += CreatePost(twPost);
+					htmlString += CreatePost(twPost, profileId, SocialMediaFeedType.Twitter);
 				}
 				htmlString += new HtmlString($@"
 					</div>
@@ -86,10 +88,12 @@ namespace Socius.Extensions
 				");
 			}
 
+			htmlString += new HtmlString($@"<script type='text/javascript' src='/scripts/SociusJs.js'></script>");
+
 			return new HtmlString(htmlString);
 		}
 
-		private static IHtmlContent CreatePost(SocialMediaPostView postView)
+		private static IHtmlContent CreatePost(SocialMediaPostView postView, int profileId, SocialMediaFeedType feedType)
 		{
 			IHtmlContent media = new HtmlString($@"");
 
@@ -107,7 +111,7 @@ namespace Socius.Extensions
 
 			return new HtmlString($@"
 				<article class='post'>
-					<a href='{postView.PostLink}' rel='nofollow' target='_blank'>
+					<a href='{postView.PostLink}' rel='nofollow' target='_blank' onclick='Socius.addInteraction({profileId}, {(int)feedType})'>
 						{media}
 						<div>
 							<p>{postView.Message}</p>

@@ -1,6 +1,5 @@
 ﻿using Socius.Helpers;
 using Socius.Repositories;
-using Socius.Socius.Helpers;
 using Umbraco.Cms.Core.Composing;
 
 namespace Socius.DI

@@ -6,7 +6,7 @@ const Socius = (() => {
 		post.classList.add("post");
 
 		const postLink = document.createElement("a");
-		postLink.onclick = addInteraction(profileId, feedType);
+		postLink.onclick = () => addInteraction(profileId, feedType);
 		postLink.href = smPost.postLink;
 		postLink.rel = "nofollow";
 		postLink.target = "_blank";

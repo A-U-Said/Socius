@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Socius.Helpers;
-using Socius.Socius.Dto.Commands;
+using Socius.Dto.Commands;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 

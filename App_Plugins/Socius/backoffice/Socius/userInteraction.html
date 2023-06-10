@@ -1,8 +1,6 @@
 
 <div class="clearfix" ng-controller="Socius.UserInteraction as vm">
 
-	<umb-editor-view footer="false">
-
 		<umb-editor-header
 			name="vm.page.name"
 			name-locked="true"
@@ -11,10 +9,42 @@
 			hide-alias="true">
 		</umb-editor-header>
 
-		<umb-editor-container>
 
-		</umb-editor-container>
+		<section class="UserInteraction-container">
 
-	</umb-editor-view>
+			<div class="interaction-filters">
+				<select 
+					name="sociusProfile"
+					class="umb-property-editor umb-dropdown"
+					ng-model="vm.selectedProfile"
+					ng-change="vm.getInteractions()"
+				>
+					<option value="">Select a Socius profile</option>
+					<option 
+						ng-repeat="sociusProfile in vm.profiles" 
+						value="{{sociusProfile.id}}"
+					>
+						{{sociusProfile.name}}
+					</option>
+				</select>
+
+				<select 
+					name="timescale"
+					class="umb-property-editor umb-dropdown"
+					ng-model="vm.selectedTimescale"
+					ng-change="vm.getInteractions()"
+				>
+					<option value="">Select a timescale</option>
+					<option ng-repeat="timescale in vm.timescales" value="{{timescale.id}}">{{timescale.name}}</option>
+				</select>
+			</div>
+
+			<div class="interaction-content" ng-if="vm.chartData.labels.length > 0 && vm.selectedProfile != null">
+				<div class="chart-container">
+					<canvas interaction-chart data="{{vm.chartData}}"></canvas>
+				</div>
+			</div>
+
+		</section>
 
 </div>

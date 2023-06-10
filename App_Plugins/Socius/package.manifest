@@ -11,7 +11,9 @@
 		"~/App_Plugins/Socius/backoffice/Socius/profiles.resource.js",
 		"~/App_Plugins/Socius/backoffice/Socius/changelog.resource.js",
 		"~/App_Plugins/Socius/backoffice/Socius/help.resource.js",
+		"~/App_Plugins/Socius/backoffice/Socius/userInteraction.resource.js",
 		"~/App_Plugins/Socius/MetaSdk.js",
+		"~/App_Plugins/Socius/chart.js",
 	],
 	"css": [
 		"~/App_Plugins/Socius/backoffice/Socius/Socius.css"

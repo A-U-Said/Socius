@@ -1,4 +1,6 @@
-﻿namespace Socius.Extensions;
+﻿using Socius.Dto.Views.UserInteraction;
+
+namespace Socius.Extensions;
 
 public static class SociusExtensions
 {
@@ -11,4 +13,5 @@ public static class SociusExtensions
 
 		throw new ArgumentNullException(nameof(source), errorMessage);
 	}
+
 }

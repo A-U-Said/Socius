@@ -1,6 +1,6 @@
 ﻿using Socius.Models.Shared;
 
-namespace Socius.Socius.Dto.Commands
+namespace Socius.Dto.Commands
 {
 	public class RecordInteractionCommand
 	{
